@@ -13,5 +13,5 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
 
 	public List<Reserva> findAllByOrderByIdAsc();
 
-	public List<Reserva> findByDataSalaDataAndDataSalaSalaQtdPessoasOrderByIdAsc(Date data, Integer qtdPessoas);
+	public List<Reserva> findByDataAndSalaQtdPessoasGreaterThanEqualAndSalaImpressoraOrderByIdAsc(Date data, Integer qtdPessoas, Boolean impressora);
 }

@@ -11,11 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,10 +27,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Table( //
-		name = "REUNIAO", //
-		uniqueConstraints = @UniqueConstraint(columnNames = { "TEMA" }) //
-)
+@Table(name = "REUNIAO")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Reuniao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -77,8 +76,8 @@ public class Reuniao implements Serializable {
 	@Column(name = "QUANTIDADE_NOTEBOOKS", nullable = false)
 	private Integer qtdNotebooks;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idReuniao")
-	@JsonManagedReference
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "reuniao")
+	@JsonBackReference
 	private List<Reserva> reservas;
 
 }

@@ -44,7 +44,7 @@ public class ReservaController {
 			@RequestParam Integer qtdPessoas, //
 			@RequestParam Boolean impressora) //
 			throws BadRequestException {
-		return reservaService.getReservasBy(data,  qtdPessoas);
+		return reservaService.getReservasBy(data, qtdPessoas, impressora);
 	}
 
 	@PostMapping

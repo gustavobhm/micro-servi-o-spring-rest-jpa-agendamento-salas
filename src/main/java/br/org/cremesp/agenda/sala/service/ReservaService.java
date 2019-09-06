@@ -29,10 +29,10 @@ public class ReservaService {
 		}
 	}
 
-	public List<Reserva> getReservasBy(Date data, Integer qtdPessoas) throws BadRequestException {
+	public List<Reserva> getReservasBy(Date data, Integer qtdPessoas, Boolean impressora) throws BadRequestException {
 		try {
-			System.out.println("teste");
-			return reservaRepository.findByDataSalaDataAndDataSalaSalaQtdPessoasOrderByIdAsc(data, qtdPessoas);
+			return reservaRepository.findByDataAndSalaQtdPessoasGreaterThanEqualAndSalaImpressoraOrderByIdAsc(data,
+					qtdPessoas, impressora);
 		} catch (Exception e) {
 			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
 		}

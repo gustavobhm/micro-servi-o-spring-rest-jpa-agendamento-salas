@@ -1,17 +1,19 @@
 package br.org.cremesp.agenda.sala.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,10 +24,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table( //
-		name = "HORARIO_RESERVA", //
-		uniqueConstraints = @UniqueConstraint(columnNames = { "HORA", "ID_DATA_SALA" }) //
+		name = "HORARIO", //
+		uniqueConstraints = @UniqueConstraint(columnNames = { "HORA" }) //
 )
-public class HorarioReserva {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Horario {
 
 	@Id
 	@Column(name = "ID")
@@ -33,12 +36,11 @@ public class HorarioReserva {
 	private Integer id;
 
 	@Column(name = "HORA", nullable = false)
-	@JsonValue
+	// @JsonValue
 	private String hora;
 
-	@ManyToOne
-	@JoinColumn(name = "ID_DATA_SALA", referencedColumnName = "ID", insertable = true, updatable = true, nullable = false)
+	@OneToMany(mappedBy = "horario")
 	@JsonBackReference
-	private ReservaDataSala idDataSala;
+	private List<Reserva> reservas;
 
 }
