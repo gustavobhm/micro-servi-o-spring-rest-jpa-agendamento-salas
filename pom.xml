@@ -23,7 +23,7 @@
 	</parent>
 
 	<groupId>br.com.cremesp</groupId>
-	<artifactId>agendamento</artifactId>
+	<artifactId>agendamento-salas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<name>agendamento-salas</name>

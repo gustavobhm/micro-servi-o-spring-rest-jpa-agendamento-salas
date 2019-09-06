@@ -13,40 +13,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.org.cremesp.agenda.sala.entity.Agendamento;
+import br.org.cremesp.agenda.sala.entity.Reuniao;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
-import br.org.cremesp.agenda.sala.service.AgendamentoService;
+import br.org.cremesp.agenda.sala.service.ReuniaoService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/")
-public class AgendamentoController {
+@RequestMapping("/reunioes")
+public class ReuniaoController {
 
 	@Autowired
-	private AgendamentoService agendamentoService;
+	private ReuniaoService reuniaoService;
 
 	@GetMapping
-	public List<Agendamento> getAll() {
-		return agendamentoService.getAll();
+	public List<Reuniao> getAll() {
+		return reuniaoService.getAll();
 	}
 
 	@GetMapping("/{id}")
-	public Agendamento get(@PathVariable int id) throws BadRequestException {
-		return agendamentoService.get(id);
+	public Reuniao get(@PathVariable int id) throws BadRequestException {
+		return reuniaoService.get(id);
 	}
 
 	@PostMapping
-	public Agendamento add(@RequestBody Agendamento agendamento) throws BadRequestException {
-		return agendamentoService.add(agendamento);
+	public Reuniao add(@RequestBody Reuniao reuniao) throws BadRequestException {
+		return reuniaoService.add(reuniao);
 	}
 
 	@PutMapping
-	public Agendamento edit(@RequestBody Agendamento agendamento) throws BadRequestException {
-		return agendamentoService.edit(agendamento);
+	public Reuniao edit(@RequestBody Reuniao reuniao) throws BadRequestException {
+		return reuniaoService.edit(reuniao);
 	}
 
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable int id) throws BadRequestException {
-		agendamentoService.delete(id);
+		reuniaoService.delete(id);
 	}
 }

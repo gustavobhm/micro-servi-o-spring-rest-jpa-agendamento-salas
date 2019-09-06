@@ -1,6 +1,6 @@
 package br.org.cremesp.agenda.sala.constantes;
 
-public enum AgendamentoEnum {
+public enum AgendamentoSalasEnum {
 	
 	MSG_AGENDAMENTO("AGENDAMENTO"),
 	MSG_SUCESSO("SUCESSO"),
@@ -10,7 +10,7 @@ public enum AgendamentoEnum {
 	
 	private String texto;
 
-    private AgendamentoEnum(String texto) {
+    private AgendamentoSalasEnum(String texto) {
         this.texto = texto;
     }
 
