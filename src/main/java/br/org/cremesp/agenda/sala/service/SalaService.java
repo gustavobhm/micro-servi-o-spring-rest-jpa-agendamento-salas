@@ -1,54 +1,53 @@
 package br.org.cremesp.agenda.sala.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
-import br.org.cremesp.agenda.sala.entity.Reserva;
+import br.org.cremesp.agenda.sala.entity.Sala;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
-import br.org.cremesp.agenda.sala.repository.ReservaRepository;
+import br.org.cremesp.agenda.sala.repository.SalaRepository;
 
 @Service
-public class ReservaService {
+public class SalaService {
 
 	@Autowired
-	private ReservaRepository reservaRepository;
+	private SalaRepository salaRepository;
 
-	public List<Reserva> getAll() {
-		return reservaRepository.findAllByOrderByIdAsc();
+	public List<Sala> getAll() {
+		return salaRepository.findAllByOrderByIdAsc();
 	}
 
-	public Reserva get(int id) throws BadRequestException {
+	public Sala get(int id) throws BadRequestException {
 		try {
-			return reservaRepository.findById(id).get();
+			return salaRepository.findById(id).get();
 		} catch (Exception e) {
 			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
 		}
 	}
 
-	public List<Reserva> getReservasBy(Date data, Integer idSala) throws BadRequestException {
+	public List<Sala> getSalasBy(Integer qtdPessoas, Boolean impressora) throws BadRequestException {
 		try {
-			return reservaRepository.findByDataAndSalaIdOrderByHorarioIdAsc(data, idSala);
+			return salaRepository.findByQtdPessoasGreaterThanEqualAndImpressoraOrderByQtdPessoasAsc(qtdPessoas, impressora);
 		} catch (Exception e) {
 			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
 		}
 	}
 
-	public Reserva add(Reserva reserva) throws BadRequestException {
+	public Sala add(Sala sala) throws BadRequestException {
 		try {
-			return reservaRepository.save(reserva);
+			return salaRepository.save(sala);
 		} catch (Exception e) {
 			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
 		}
 	}
 
-	public Reserva edit(Reserva reserva) throws BadRequestException {
+	public Sala edit(Sala sala) throws BadRequestException {
 		try {
-			reservaRepository.deleteById(reserva.getId());
-			return reservaRepository.save(reserva);
+			salaRepository.deleteById(sala.getId());
+			return salaRepository.save(sala);
 		} catch (Exception e) {
 			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
 		}
@@ -56,7 +55,7 @@ public class ReservaService {
 
 	public void delete(int id) throws BadRequestException {
 		try {
-			reservaRepository.deleteById(id);
+			salaRepository.deleteById(id);
 		} catch (Exception e) {
 			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
 		}

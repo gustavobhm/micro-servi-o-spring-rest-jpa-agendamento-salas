@@ -1,10 +1,8 @@
 package br.org.cremesp.agenda.sala.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,48 +14,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.org.cremesp.agenda.sala.entity.Reserva;
+import br.org.cremesp.agenda.sala.entity.Sala;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
-import br.org.cremesp.agenda.sala.service.ReservaService;
+import br.org.cremesp.agenda.sala.service.SalaService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/reservas")
-public class ReservaController {
+@RequestMapping("/salas")
+public class SalaController {
 
 	@Autowired
-	private ReservaService reservaService;
+	private SalaService salaService;
 
 	@GetMapping
-	public List<Reserva> getAll() {
-		return reservaService.getAll();
+	public List<Sala> getAll() {
+		return salaService.getAll();
 	}
 
 	@GetMapping("/{id}")
-	public Reserva get(@PathVariable int id) throws BadRequestException {
-		return reservaService.get(id);
+	public Sala get(@PathVariable int id) throws BadRequestException {
+		return salaService.get(id);
 	}
 
 	@GetMapping("/filtrar")
-	public List<Reserva> getReservasBy( //
-			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date data, //
-			@RequestParam Integer idSala) //
+	public List<Sala> getReservasBy( //
+			@RequestParam Integer qtdPessoas, //
+			@RequestParam Boolean impressora) //
 			throws BadRequestException {
-		return reservaService.getReservasBy(data, idSala);
+		return salaService.getSalasBy(qtdPessoas, impressora);
 	}
 
 	@PostMapping
-	public Reserva add(@RequestBody Reserva reserva) throws BadRequestException {
-		return reservaService.add(reserva);
+	public Sala add(@RequestBody Sala reuniao) throws BadRequestException {
+		return salaService.add(reuniao);
 	}
 
 	@PutMapping
-	public Reserva edit(@RequestBody Reserva reserva) throws BadRequestException {
-		return reservaService.edit(reserva);
+	public Sala edit(@RequestBody Sala reuniao) throws BadRequestException {
+		return salaService.edit(reuniao);
 	}
 
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable int id) throws BadRequestException {
-		reservaService.delete(id);
+		salaService.delete(id);
 	}
 }

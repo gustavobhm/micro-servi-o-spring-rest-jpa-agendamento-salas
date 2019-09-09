@@ -16,8 +16,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -42,29 +41,31 @@ public class Reserva {
 
 	@ManyToOne
 	@JoinColumn(name = "ID_REUNIAO", referencedColumnName = "ID", insertable = true, updatable = true)
-	@JsonManagedReference
 	@NotNull
-	@JsonIdentityReference(alwaysAsId = true)
+	@JsonManagedReference
+	// @JsonIdentityReference(alwaysAsId = true)
 	private Reuniao reuniao;
 
 	@Temporal(TemporalType.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@Column(name = "DATA")
 	@NotNull
+	// @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@JsonIgnore
 	private Date data;
 
 	@ManyToOne
 	@JoinColumn(name = "ID_SALA", referencedColumnName = "ID", insertable = true, updatable = true)
-	@JsonManagedReference
 	@NotNull
-	@JsonIdentityReference(alwaysAsId = true)
+	// @JsonManagedReference
+	// @JsonIdentityReference(alwaysAsId = true)
+	@JsonIgnore
 	private Sala sala;
 
 	@ManyToOne
 	@JoinColumn(name = "ID_HORARIO", referencedColumnName = "ID", insertable = true, updatable = true)
-	@JsonManagedReference
 	@NotNull
-	@JsonIdentityReference(alwaysAsId = true)
+	@JsonManagedReference
+	// @JsonIdentityReference(alwaysAsId = true)
 	private Horario horario;
 
 }
