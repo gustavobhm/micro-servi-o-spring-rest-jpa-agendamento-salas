@@ -28,6 +28,14 @@ public class HorarioService {
 		}
 	}
 
+	public Horario getHoraBy(String hora) throws BadRequestException {
+		try {
+			return horarioRepository.findByHora(hora);
+		} catch (Exception e) {
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+		}
+	}
+
 	public Horario add(Horario horario) throws BadRequestException {
 		try {
 			return horarioRepository.save(horario);

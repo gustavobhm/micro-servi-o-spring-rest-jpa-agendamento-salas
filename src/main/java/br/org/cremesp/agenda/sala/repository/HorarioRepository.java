@@ -10,5 +10,7 @@ import br.org.cremesp.agenda.sala.entity.Horario;
 @Repository
 public interface HorarioRepository extends JpaRepository<Horario, Integer> {
 
+	public Horario findByHora(String hora);
+
 	public List<Horario> findAllByOrderByIdAsc();
 }
