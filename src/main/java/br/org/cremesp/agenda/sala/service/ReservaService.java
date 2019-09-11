@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
 import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.repository.ReservaRepository;
@@ -25,7 +24,7 @@ public class ReservaService {
 		try {
 			return reservaRepository.findById(id).get();
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
@@ -33,7 +32,7 @@ public class ReservaService {
 		try {
 			return reservaRepository.findByDataAndSalaIdOrderByHorarioIdAsc(data, idSala);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
@@ -41,7 +40,7 @@ public class ReservaService {
 		try {
 			return reservaRepository.save(reserva);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
@@ -50,7 +49,7 @@ public class ReservaService {
 			reservaRepository.deleteById(reserva.getId());
 			return reservaRepository.save(reserva);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
@@ -58,7 +57,7 @@ public class ReservaService {
 		try {
 			reservaRepository.deleteById(id);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 
 	}

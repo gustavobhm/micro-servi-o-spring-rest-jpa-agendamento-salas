@@ -32,7 +32,7 @@ public class HorarioService {
 		try {
 			return horarioRepository.save(horario);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
@@ -43,7 +43,7 @@ public class HorarioService {
 			h.setHora(horario.getHora());
 			return horarioRepository.save(h);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 
 	}
@@ -52,7 +52,7 @@ public class HorarioService {
 		try {
 			horarioRepository.deleteById(id);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 
 	}

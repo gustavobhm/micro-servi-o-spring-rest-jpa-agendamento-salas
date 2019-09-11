@@ -55,7 +55,7 @@ public class SalaControllerIntegrationTest {
 		repository.saveAndFlush(sala2);
 
 	}
-	
+
 	@Test
 	public void getSalas_ValidTest() throws Exception {
 
@@ -65,7 +65,7 @@ public class SalaControllerIntegrationTest {
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
 				.andExpect(jsonPath("$", hasSize(2))) //
 				.andExpect(jsonPath("$[1].nome", is("Sala 2")));
-	}	
+	}
 
 	@Test
 	public void getSalasFiltrar_ValidTest() throws Exception {
@@ -77,7 +77,7 @@ public class SalaControllerIntegrationTest {
 				.andExpect(jsonPath("$", hasSize(1))) //
 				.andExpect(jsonPath("$[0].nome", is("Sala 2")));
 	}
-	
+
 	@Test
 	public void getByIdSala_ValidTest() throws Exception {
 
@@ -87,7 +87,15 @@ public class SalaControllerIntegrationTest {
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
 				.andExpect(jsonPath("$.id", is(2))) //
 				.andExpect(jsonPath("$.nome", is("Sala 2")));
-	}	
+	}
+
+	@Test
+	public void getByIdSala_InvalidTest() throws Exception {
+
+		mvc.perform(get("/salas/3") //
+				.contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isBadRequest());
+	}
 
 	@Test
 	public void addSala_ValidTest() throws Exception {
@@ -98,6 +106,17 @@ public class SalaControllerIntegrationTest {
 				.contentType(MediaType.APPLICATION_JSON) //
 				.content(gson.toJson(sala))) //
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void addSala_InvalidTest() throws Exception {
+
+		Sala sala = new Sala(null, "Sala 2", "3º", 30, false);
+
+		mvc.perform(post("/salas") //
+				.contentType(MediaType.APPLICATION_JSON) //
+				.content(gson.toJson(sala))) //
+				.andExpect(status().isBadRequest());
 	}
 
 	@Test
@@ -112,11 +131,30 @@ public class SalaControllerIntegrationTest {
 	}
 
 	@Test
+	public void updateSala_invalidTest() throws Exception {
+
+		Sala sala = new Sala(3, "Sala 1", "2º", 20, true);
+
+		mvc.perform(put("/salas") //
+				.contentType(MediaType.APPLICATION_JSON) //
+				.content(gson.toJson(sala))) //
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
 	public void deleteSala_ValidTest() throws Exception {
 
 		mvc.perform(delete("/salas/1") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void deleteSala_invalidTest() throws Exception {
+
+		mvc.perform(delete("/salas/3") //
+				.contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isBadRequest());
 	}
 
 }

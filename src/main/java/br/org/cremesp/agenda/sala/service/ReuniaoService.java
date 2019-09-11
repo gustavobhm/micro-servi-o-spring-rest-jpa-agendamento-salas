@@ -24,7 +24,7 @@ public class ReuniaoService {
 		try {
 			return reuniaoRepository.findById(id).get();
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
@@ -32,7 +32,7 @@ public class ReuniaoService {
 		try {
 			return reuniaoRepository.save(reuniao);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
@@ -41,7 +41,7 @@ public class ReuniaoService {
 			reuniaoRepository.deleteById(reuniao.getId());
 			return reuniaoRepository.save(reuniao);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 	}
 
@@ -49,7 +49,7 @@ public class ReuniaoService {
 		try {
 			reuniaoRepository.deleteById(id);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
+			throw new BadRequestException(e.getMessage());
 		}
 
 	}

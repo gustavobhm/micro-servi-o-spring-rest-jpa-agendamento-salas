@@ -39,8 +39,7 @@ public class SalaController {
 	@GetMapping("/filtrar")
 	public List<Sala> getReservasBy( //
 			@RequestParam Integer qtdPessoas, //
-			@RequestParam Boolean impressora) //
-			throws BadRequestException {
+			@RequestParam Boolean impressora) {
 		return salaService.getSalasBy(qtdPessoas, impressora);
 	}
 
