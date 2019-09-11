@@ -1,6 +1,7 @@
 package br.org.cremesp.agenda.sala.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -76,6 +77,6 @@ public class Reuniao implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "reuniao")
 	@JsonBackReference
-	private List<Reserva> reservas;
+	private List<Reserva> reservas = new ArrayList<>();
 
 }

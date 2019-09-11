@@ -27,117 +27,96 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.google.gson.Gson;
 
 import br.org.cremesp.agenda.sala.AgendamentoSalasApplication;
-import br.org.cremesp.agenda.sala.entity.Horario;
-import br.org.cremesp.agenda.sala.repository.HorarioRepository;
+import br.org.cremesp.agenda.sala.entity.Sala;
+import br.org.cremesp.agenda.sala.repository.SalaRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = AgendamentoSalasApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class HorarioControllerIntegrationTest {
+public class SalaControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mvc;
 
 	@Autowired
-	private HorarioRepository repository;
+	private SalaRepository repository;
 
 	private Gson gson = new Gson();
 
 	@Before
 	public void init() {
 
-		Horario horario1 = new Horario(null, "08:00 - 09:00");
-		repository.saveAndFlush(horario1);
+		Sala sala1 = new Sala(null, "Sala 1", "1º", 10, true);
+		repository.saveAndFlush(sala1);
 
-		Horario horario2 = new Horario(null, "09:00 - 10:00");
-		repository.saveAndFlush(horario2);
+		Sala sala2 = new Sala(null, "Sala 2", "2º", 20, false);
+		repository.saveAndFlush(sala2);
 
 	}
-
+	
 	@Test
-	public void getHorarios_ValidTest() throws Exception {
-		mvc.perform(get("/horarios") //
+	public void getSalas_ValidTest() throws Exception {
+
+		mvc.perform(get("/salas") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk()) //
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
-				.andExpect(jsonPath("$", hasSize(2))).andExpect(jsonPath("$[1].hora", is("09:00 - 10:00")));
-	}
+				.andExpect(jsonPath("$", hasSize(2))) //
+				.andExpect(jsonPath("$[1].nome", is("Sala 2")));
+	}	
 
 	@Test
-	public void getByIdHorario_ValidTest() throws Exception {
-		mvc.perform(get("/horarios/1") //
+	public void getSalasFiltrar_ValidTest() throws Exception {
+
+		mvc.perform(get("/salas/filtrar?qtdPessoas=20&impressora=false") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk()) //
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
-				.andExpect(jsonPath("$.id", is(1))) //
-				.andExpect(jsonPath("$.hora", is("08:00 - 09:00")));
+				.andExpect(jsonPath("$", hasSize(1))) //
+				.andExpect(jsonPath("$[0].nome", is("Sala 2")));
 	}
-
+	
 	@Test
-	public void getByIdHorario_InvalidTest() throws Exception {
-		mvc.perform(get("/horarios/3") //
+	public void getByIdSala_ValidTest() throws Exception {
+
+		mvc.perform(get("/salas/2") //
 				.contentType(MediaType.APPLICATION_JSON)) //
-				.andExpect(status().isBadRequest());
-	}
+				.andExpect(status().isOk()) //
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
+				.andExpect(jsonPath("$.id", is(2))) //
+				.andExpect(jsonPath("$.nome", is("Sala 2")));
+	}	
 
 	@Test
-	public void addHorario_ValidTest() throws Exception {
+	public void addSala_ValidTest() throws Exception {
 
-		Horario horario = new Horario(null, "10:00 - 11:00");
+		Sala sala = new Sala(null, "Sala 3", "3º", 30, false);
 
-		mvc.perform(post("/horarios") //
+		mvc.perform(post("/salas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(horario))) //
+				.content(gson.toJson(sala))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void addHorario_InvalidTest() throws Exception {
+	public void updateSala_ValidTest() throws Exception {
 
-		Horario horario = new Horario(null, "08:00 - 09:00");
+		Sala sala = new Sala(1, "Sala 1", "2º", 20, true);
 
-		mvc.perform(post("/horarios") //
+		mvc.perform(put("/salas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(horario))) //
-				.andExpect(status().isBadRequest());
-	}
-
-	@Test
-	public void updateHorario_ValidTest() throws Exception {
-
-		Horario horario = new Horario(2, "10:00 - 11:00");
-
-		mvc.perform(put("/horarios") //
-				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(horario))) //
+				.content(gson.toJson(sala))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void updateHorario_InvalidTest() throws Exception {
+	public void deleteSala_ValidTest() throws Exception {
 
-		Horario horario = new Horario(3, "09:00 - 10:00");
-
-		mvc.perform(put("/horarios") //
-				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(horario))) //
-				.andExpect(status().isBadRequest());
-	}
-
-	@Test
-	public void deleteHorario_ValidTest() throws Exception {
-		mvc.perform(delete("/horarios/1") //
+		mvc.perform(delete("/salas/1") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk());
-	}
-
-	@Test
-	public void deleteHorario_InvalidTest() throws Exception {
-		mvc.perform(delete("/horarios/3") //
-				.contentType(MediaType.APPLICATION_JSON)) //
-				.andExpect(status().isBadRequest());
 	}
 
 }

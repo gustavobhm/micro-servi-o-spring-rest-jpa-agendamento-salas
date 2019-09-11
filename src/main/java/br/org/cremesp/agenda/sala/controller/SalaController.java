@@ -45,13 +45,13 @@ public class SalaController {
 	}
 
 	@PostMapping
-	public Sala add(@RequestBody Sala reuniao) throws BadRequestException {
-		return salaService.add(reuniao);
+	public Sala add(@RequestBody Sala sala) throws BadRequestException {
+		return salaService.add(sala);
 	}
 
 	@PutMapping
-	public Sala edit(@RequestBody Sala reuniao) throws BadRequestException {
-		return salaService.edit(reuniao);
+	public Sala edit(@RequestBody Sala sala) throws BadRequestException {
+		return salaService.edit(sala);
 	}
 
 	@DeleteMapping("/{id}")

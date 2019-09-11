@@ -1,8 +1,10 @@
 package br.org.cremesp.agenda.sala.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,13 +15,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
@@ -28,10 +28,18 @@ import lombok.NoArgsConstructor;
 		name = "SALA", //
 		uniqueConstraints = @UniqueConstraint(columnNames = { "NOME" }) //
 )
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Sala implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public Sala(Integer id, String nome, String andar, Integer qtdPessoas, Boolean impressora) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.andar = andar;
+		this.qtdPessoas = qtdPessoas;
+		this.impressora = impressora;
+	}
 
 	@Id
 	@Column(name = "ID")
@@ -50,8 +58,8 @@ public class Sala implements Serializable {
 	@Column(name = "IMPRESSORA", nullable = false)
 	private Boolean impressora;
 
-	@OneToMany(mappedBy = "sala")
-	@JsonBackReference
-	private List<Reserva> reservas;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sala")
+	@JsonIgnore
+	private List<Reserva> reservas = new ArrayList<>();
 
 }

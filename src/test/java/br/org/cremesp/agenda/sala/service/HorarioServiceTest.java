@@ -2,34 +2,24 @@ package br.org.cremesp.agenda.sala.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.org.cremesp.agenda.sala.entity.Horario;
-import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.repository.HorarioRepository;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class HorarioServiceTest {
-
-	@TestConfiguration
-	static class HorarioServiceTestContextConfiguration {
-
-		@Bean
-		public HorarioService horarioService() {
-			return new HorarioService();
-		}
-	}
 
 	@Autowired
 	private HorarioService horarioService;
@@ -40,9 +30,9 @@ public class HorarioServiceTest {
 	@Before
 	public void setUp() {
 
-		Horario horario = new Horario(null, "08:00 - 09:00", new ArrayList<Reserva>());
+		Horario horario = new Horario(1, "08:00 - 09:00");
 
-		Mockito.when(horarioRepository.findByHora(horario.getHora())).thenReturn(horario);
+		Mockito.when(horarioRepository.findById(1)).thenReturn(Optional.of(horario));
 	}
 
 	@Test
@@ -50,7 +40,7 @@ public class HorarioServiceTest {
 
 		String hora = "08:00 - 09:00";
 
-		Horario found = horarioService.getHoraBy(hora);
+		Horario found = horarioService.get(1);
 
 		assertThat(found.getHora()).isEqualTo(hora);
 	}

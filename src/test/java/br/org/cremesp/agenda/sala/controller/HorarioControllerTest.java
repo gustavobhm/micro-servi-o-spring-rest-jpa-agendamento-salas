@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,7 +20,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.org.cremesp.agenda.sala.entity.Horario;
-import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.service.HorarioService;
 
 @RunWith(SpringRunner.class)
@@ -37,7 +35,7 @@ public class HorarioControllerTest {
 	@Test
 	public void givenHorarios_whenGetHorarios_thenReturnJsonArray() throws Exception {
 
-		Horario horario = new Horario(null, "08:00 - 09:00", new ArrayList<Reserva>());
+		Horario horario = new Horario(null, "08:00 - 09:00");
 
 		List<Horario> allHorarios = Arrays.asList(horario);
 

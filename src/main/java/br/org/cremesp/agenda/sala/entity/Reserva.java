@@ -1,5 +1,6 @@
 package br.org.cremesp.agenda.sala.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -32,7 +34,9 @@ import lombok.NoArgsConstructor;
 		name = "RESERVA", //
 		uniqueConstraints = @UniqueConstraint(columnNames = { "DATA", "ID_SALA", "ID_HORARIO" }) //
 )
-public class Reserva {
+public class Reserva implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "ID")
@@ -43,21 +47,18 @@ public class Reserva {
 	@JoinColumn(name = "ID_REUNIAO", referencedColumnName = "ID", insertable = true, updatable = true)
 	@NotNull
 	@JsonManagedReference
-	// @JsonIdentityReference(alwaysAsId = true)
 	private Reuniao reuniao;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "DATA")
 	@NotNull
-	// @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	@JsonIgnore
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date data;
 
 	@ManyToOne
 	@JoinColumn(name = "ID_SALA", referencedColumnName = "ID", insertable = true, updatable = true)
 	@NotNull
-	// @JsonManagedReference
-	// @JsonIdentityReference(alwaysAsId = true)
+	@JsonManagedReference
 	@JsonIgnore
 	private Sala sala;
 
@@ -65,7 +66,6 @@ public class Reserva {
 	@JoinColumn(name = "ID_HORARIO", referencedColumnName = "ID", insertable = true, updatable = true)
 	@NotNull
 	@JsonManagedReference
-	// @JsonIdentityReference(alwaysAsId = true)
 	private Horario horario;
 
 }
