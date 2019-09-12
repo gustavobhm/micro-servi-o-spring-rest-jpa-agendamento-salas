@@ -46,8 +46,12 @@ public class ReservaService {
 
 	public Reserva edit(Reserva reserva) throws BadRequestException {
 		try {
-			reservaRepository.deleteById(reserva.getId());
-			return reservaRepository.save(reserva);
+			Reserva r = reservaRepository.findById(reserva.getId()).get();
+			r.setData(reserva.getData());
+			r.setHorario(reserva.getHorario());
+			r.setReuniao(reserva.getReuniao());
+			r.setSala(reserva.getSala());
+			return reservaRepository.save(r);
 		} catch (Exception e) {
 			throw new BadRequestException(e.getMessage());
 		}

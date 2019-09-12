@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
 import br.org.cremesp.agenda.sala.entity.Reuniao;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.repository.ReuniaoRepository;
@@ -38,8 +37,20 @@ public class ReuniaoService {
 
 	public Reuniao edit(Reuniao reuniao) throws BadRequestException {
 		try {
-			reuniaoRepository.deleteById(reuniao.getId());
-			return reuniaoRepository.save(reuniao);
+			Reuniao r = reuniaoRepository.findById(reuniao.getId()).get();
+			r.setExtraAgua(reuniao.getExtraAgua());
+			r.setExtraBiscoito(reuniao.getExtraBiscoito());
+			r.setExtraCafe(reuniao.getExtraCafe());
+			r.setIdResponsavel(reuniao.getIdResponsavel());
+			r.setIdSolicitante(reuniao.getIdSolicitante());
+			r.setImpressora(reuniao.getImpressora());
+			r.setProjetor(reuniao.getProjetor());
+			r.setPublicoExterno(reuniao.getPublicoExterno());
+			r.setPublicoInterno(reuniao.getPublicoInterno());
+			r.setQtdNotebooks(reuniao.getQtdNotebooks());
+			r.setQtdPessoas(reuniao.getQtdPessoas());
+			r.setTema(reuniao.getTema());
+			return reuniaoRepository.save(r);
 		} catch (Exception e) {
 			throw new BadRequestException(e.getMessage());
 		}

@@ -18,8 +18,6 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,7 +44,6 @@ public class Reserva implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "ID_REUNIAO", referencedColumnName = "ID", insertable = true, updatable = true)
 	@NotNull
-	@JsonManagedReference
 	private Reuniao reuniao;
 
 	@Temporal(TemporalType.DATE)
@@ -58,14 +55,11 @@ public class Reserva implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "ID_SALA", referencedColumnName = "ID", insertable = true, updatable = true)
 	@NotNull
-	@JsonManagedReference
-	@JsonIgnore
 	private Sala sala;
 
 	@ManyToOne
 	@JoinColumn(name = "ID_HORARIO", referencedColumnName = "ID", insertable = true, updatable = true)
 	@NotNull
-	@JsonManagedReference
 	private Horario horario;
 
 }

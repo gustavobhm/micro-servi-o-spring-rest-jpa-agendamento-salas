@@ -27,132 +27,121 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.google.gson.Gson;
 
 import br.org.cremesp.agenda.sala.AgendamentoSalasApplication;
-import br.org.cremesp.agenda.sala.entity.Sala;
-import br.org.cremesp.agenda.sala.repository.SalaRepository;
+import br.org.cremesp.agenda.sala.entity.Reuniao;
+import br.org.cremesp.agenda.sala.repository.ReuniaoRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = AgendamentoSalasApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class SalaControllerIntegrationTest {
+public class ReuniaoControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mvc;
 
 	@Autowired
-	private SalaRepository repository;
+	private ReuniaoRepository repository;
 
 	private Gson gson = new Gson();
 
 	@Before
 	public void init() {
 
-		Sala sala1 = new Sala(null, "Sala 1", "1º", 10, true);
-		repository.saveAndFlush(sala1);
+		Reuniao reuniao1 = new Reuniao(null, 2, 1, "Reunião 1", 10, true, true, true, true, true, true, true, 10);
+		repository.saveAndFlush(reuniao1);
 
-		Sala sala2 = new Sala(null, "Sala 2", "2º", 20, false);
-		repository.saveAndFlush(sala2);
+		Reuniao reuniao2 = new Reuniao(null, 4, 3, "Reunião 2", 20, true, false, true, true, false, true, false, 20);
+		repository.saveAndFlush(reuniao2);
 
 	}
 
 	@Test
-	public void getSalas_ValidTest() throws Exception {
+	public void getReuniao_ValidTest() throws Exception {
 
-		mvc.perform(get("/salas") //
+		mvc.perform(get("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk()) //
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
 				.andExpect(jsonPath("$", hasSize(2))) //
-				.andExpect(jsonPath("$[1].nome", is("Sala 2")));
+				.andExpect(jsonPath("$[1].tema", is("Reunião 2")));
 	}
 
 	@Test
-	public void getSalasFiltrar_ValidTest() throws Exception {
+	public void getByIdReuniao_ValidTest() throws Exception {
 
-		mvc.perform(get("/salas/filtrar?qtdPessoas=20&impressora=false") //
-				.contentType(MediaType.APPLICATION_JSON)) //
-				.andExpect(status().isOk()) //
-				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
-				.andExpect(jsonPath("$", hasSize(1))) //
-				.andExpect(jsonPath("$[0].nome", is("Sala 2")));
-	}
-
-	@Test
-	public void getByIdSala_ValidTest() throws Exception {
-
-		mvc.perform(get("/salas/2") //
+		mvc.perform(get("/reunioes/2") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk()) //
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
 				.andExpect(jsonPath("$.id", is(2))) //
-				.andExpect(jsonPath("$.nome", is("Sala 2")));
+				.andExpect(jsonPath("$.tema", is("Reunião 2")));
 	}
 
 	@Test
-	public void getByIdSala_InvalidTest() throws Exception {
+	public void getByIdReuniao_InvalidTest() throws Exception {
 
-		mvc.perform(get("/salas/3") //
+		mvc.perform(get("/reunioes/3") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
-	public void addSala_ValidTest() throws Exception {
+	public void addReuniao_ValidTest() throws Exception {
 
-		Sala sala = new Sala(null, "Sala 3", "3º", 30, false);
+		Reuniao reuniao = new Reuniao(null, 2, 1, "Reunião 3", 10, true, true, true, true, true, true, true, 10);
 
-		mvc.perform(post("/salas") //
+		mvc.perform(post("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(sala))) //
+				.content(gson.toJson(reuniao))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void addSala_InvalidTest() throws Exception {
+	public void addReuniao_InvalidTest() throws Exception {
 
-		Sala sala = new Sala(null, "Sala 2", "3º", 30, false);
+		Reuniao reuniao = new Reuniao(null, 2, 1, "Reunião 1", 10, true, true, true, true, true, true, true, 10);
 
-		mvc.perform(post("/salas") //
+		mvc.perform(post("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(sala))) //
+				.content(gson.toJson(reuniao))) //
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
-	public void updateSala_ValidTest() throws Exception {
+	public void updateReuniao_ValidTest() throws Exception {
 
-		Sala sala = new Sala(1, "Sala 1", "2º", 20, true);
+		Reuniao reuniao = new Reuniao(2, 2, 1, "Reunião 2 update", 10, true, true, true, true, true, true, true, 10);
 
-		mvc.perform(put("/salas") //
+		mvc.perform(put("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(sala))) //
+				.content(gson.toJson(reuniao))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void updateSala_InvalidTest() throws Exception {
+	public void updateReuniao_InvalidTest() throws Exception {
 
-		Sala sala = new Sala(3, "Sala 1", "2º", 20, true);
+		Reuniao reuniao = new Reuniao(3, 2, 1, "Reunião 3 update", 10, true, true, true, true, true, true, true, 10);		
 
-		mvc.perform(put("/salas") //
+		mvc.perform(put("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(sala))) //
+				.content(gson.toJson(reuniao))) //
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
-	public void deleteSala_ValidTest() throws Exception {
+	public void deleteReuniao_ValidTest() throws Exception {
 
-		mvc.perform(delete("/salas/1") //
+		mvc.perform(delete("/reunioes/1") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void deleteSala_InvalidTest() throws Exception {
+	public void deleteReuniao_InvalidTest() throws Exception {
 
-		mvc.perform(delete("/salas/3") //
+		mvc.perform(delete("/reunioes/3") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isBadRequest());
 	}
