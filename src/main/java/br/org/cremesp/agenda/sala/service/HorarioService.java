@@ -21,11 +21,8 @@ public class HorarioService {
 	}
 
 	public Horario get(int id) throws BadRequestException {
-		try {
-			return horarioRepository.findById(id).get();
-		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto());
-		}
+		return horarioRepository.findById(id)
+				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto()));
 	}
 
 	public Horario add(Horario horario) throws BadRequestException {
@@ -37,15 +34,10 @@ public class HorarioService {
 	}
 
 	public Horario edit(Horario horario) throws BadRequestException {
-
-		try {
-			Horario h = horarioRepository.findById(horario.getId()).get();
-			h.setHora(horario.getHora());
-			return horarioRepository.save(h);
-		} catch (Exception e) {
-			throw new BadRequestException(e.getMessage());
-		}
-
+		Horario h = horarioRepository.findById(horario.getId())
+				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto()));
+		h.setHora(horario.getHora());
+		return horarioRepository.save(h);
 	}
 
 	public void delete(int id) throws BadRequestException {

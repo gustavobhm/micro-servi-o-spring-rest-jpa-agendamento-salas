@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
 import br.org.cremesp.agenda.sala.entity.Reuniao;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.repository.ReuniaoRepository;
@@ -20,11 +21,9 @@ public class ReuniaoService {
 	}
 
 	public Reuniao get(int id) throws BadRequestException {
-		try {
-			return reuniaoRepository.findById(id).get();
-		} catch (Exception e) {
-			throw new BadRequestException(e.getMessage());
-		}
+		return reuniaoRepository.findById(id)
+				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto()));
+
 	}
 
 	public Reuniao add(Reuniao reuniao) throws BadRequestException {
@@ -36,24 +35,21 @@ public class ReuniaoService {
 	}
 
 	public Reuniao edit(Reuniao reuniao) throws BadRequestException {
-		try {
-			Reuniao r = reuniaoRepository.findById(reuniao.getId()).get();
-			r.setExtraAgua(reuniao.getExtraAgua());
-			r.setExtraBiscoito(reuniao.getExtraBiscoito());
-			r.setExtraCafe(reuniao.getExtraCafe());
-			r.setIdResponsavel(reuniao.getIdResponsavel());
-			r.setIdSolicitante(reuniao.getIdSolicitante());
-			r.setImpressora(reuniao.getImpressora());
-			r.setProjetor(reuniao.getProjetor());
-			r.setPublicoExterno(reuniao.getPublicoExterno());
-			r.setPublicoInterno(reuniao.getPublicoInterno());
-			r.setQtdNotebooks(reuniao.getQtdNotebooks());
-			r.setQtdPessoas(reuniao.getQtdPessoas());
-			r.setTema(reuniao.getTema());
-			return reuniaoRepository.save(r);
-		} catch (Exception e) {
-			throw new BadRequestException(e.getMessage());
-		}
+		Reuniao r = reuniaoRepository.findById(reuniao.getId())
+				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto()));
+		r.setExtraAgua(reuniao.getExtraAgua());
+		r.setExtraBiscoito(reuniao.getExtraBiscoito());
+		r.setExtraCafe(reuniao.getExtraCafe());
+		r.setIdResponsavel(reuniao.getIdResponsavel());
+		r.setIdSolicitante(reuniao.getIdSolicitante());
+		r.setImpressora(reuniao.getImpressora());
+		r.setProjetor(reuniao.getProjetor());
+		r.setPublicoExterno(reuniao.getPublicoExterno());
+		r.setPublicoInterno(reuniao.getPublicoInterno());
+		r.setQtdNotebooks(reuniao.getQtdNotebooks());
+		r.setQtdPessoas(reuniao.getQtdPessoas());
+		r.setTema(reuniao.getTema());
+		return reuniaoRepository.save(r);
 	}
 
 	public void delete(int id) throws BadRequestException {

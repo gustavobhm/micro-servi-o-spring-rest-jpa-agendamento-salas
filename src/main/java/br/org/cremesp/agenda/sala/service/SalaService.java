@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
 import br.org.cremesp.agenda.sala.entity.Sala;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.repository.SalaRepository;
@@ -20,11 +21,8 @@ public class SalaService {
 	}
 
 	public Sala get(int id) throws BadRequestException {
-		try {
-			return salaRepository.findById(id).get();
-		} catch (Exception e) {
-			throw new BadRequestException(e.getMessage());
-		}
+		return salaRepository.findById(id)
+				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto()));
 	}
 
 	public List<Sala> getSalasBy(Integer qtdPessoas, Boolean impressora) {
@@ -40,16 +38,13 @@ public class SalaService {
 	}
 
 	public Sala edit(Sala sala) throws BadRequestException {
-		try {
-			Sala s = salaRepository.findById(sala.getId()).get();
-			s.setNome(sala.getNome());
-			s.setAndar(sala.getAndar());
-			s.setQtdPessoas(sala.getQtdPessoas());
-			s.setImpressora(sala.getImpressora());
-			return salaRepository.save(s);
-		} catch (Exception e) {
-			throw new BadRequestException(e.getMessage());
-		}
+		Sala s = salaRepository.findById(sala.getId())
+				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto()));
+		s.setNome(sala.getNome());
+		s.setAndar(sala.getAndar());
+		s.setQtdPessoas(sala.getQtdPessoas());
+		s.setImpressora(sala.getImpressora());
+		return salaRepository.save(s);
 	}
 
 	public void delete(int id) throws BadRequestException {

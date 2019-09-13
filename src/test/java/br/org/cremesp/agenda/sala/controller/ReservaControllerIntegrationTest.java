@@ -30,8 +30,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.google.gson.Gson;
-
 import br.org.cremesp.agenda.sala.AgendamentoSalasApplication;
 import br.org.cremesp.agenda.sala.entity.Horario;
 import br.org.cremesp.agenda.sala.entity.Reserva;
@@ -63,8 +61,6 @@ public class ReservaControllerIntegrationTest {
 
 	@Autowired
 	private ReservaRepository reservaRepository;
-
-	private Gson gson = new Gson();
 
 	private Reserva reserva1;
 
@@ -110,16 +106,27 @@ public class ReservaControllerIntegrationTest {
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isBadRequest());
 	}
+	
+	@Test
+	public void getReservasFiltrar_ValidTest() throws Exception {
+
+		mvc.perform(get("/reservas/filtrar?data=2019-09-12&idSala=1") //
+				.contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isOk()) //
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
+				.andExpect(jsonPath("$", hasSize(1))) //
+				.andExpect(jsonPath("$[0].reuniao.tema", is("Reunião 1")));
+	}	
 
 	@Test
 	public void addReserva_ValidTest() throws Exception {
 
-		String reservaJson = "{ "
-									+ " \"reuniao\":{ \"id\":1 }, "
-									+ " \"data\"   :\"2019-09-06\", "
-									+ " \"sala\"   :{ \"id\":1 }, "
-									+ " \"horario\":{ \"id\":1 }"
-							+ "}";
+		String reservaJson = "{ " //
+				+ " \"reuniao\":{ \"id\":1 }, " //
+				+ " \"data\"   :\"2019-09-06\", " //
+				+ " \"sala\"   :{ \"id\":1 }, " //
+				+ " \"horario\":{ \"id\":1 }" //
+				+ "}";
 
 		mvc.perform(post("/reservas") //
 				.contentType(MediaType.APPLICATION_JSON) //
@@ -129,29 +136,29 @@ public class ReservaControllerIntegrationTest {
 
 	@Test
 	public void addReserva_InvalidTest() throws Exception {
-		
-		String reservaJson = "{ "
-				+ " \"reuniao\":{ \"id\":1 }, "
-				+ " \"data\"   :\"2019-09-12\", "
-				+ " \"sala\"   :{ \"id\":1 }, "
-				+ " \"horario\":{ \"id\":1 }"
-		+ "}";
+
+		String reservaJson = "{ " //
+				+ " \"reuniao\":{ \"id\":1 }, " //
+				+ " \"data\"   :\"2019-09-12\", " //
+				+ " \"sala\"   :{ \"id\":1 }, " //
+				+ " \"horario\":{ \"id\":1 }" //
+				+ "}";
 
 		mvc.perform(post("/reservas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(reservaJson))) //
+				.content(reservaJson)) //
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	public void updateReserva_ValidTest() throws Exception {
-		
-		String reservaJson = "{ \"id\":1 ,"
-				+ " \"reuniao\":{ \"id\":1 }, "
-				+ " \"data\"   :\"2019-09-06\", "
-				+ " \"sala\"   :{ \"id\":1 }, "
-				+ " \"horario\":{ \"id\":1 }"
-		+ "}";
+
+		String reservaJson = "{ \"id\":1 ," //
+				+ " \"reuniao\":{ \"id\":1 }, " //
+				+ " \"data\"   :\"2019-09-06\", " //
+				+ " \"sala\"   :{ \"id\":1 }, " //
+				+ " \"horario\":{ \"id\":1 }" //
+				+ "}";
 
 		mvc.perform(put("/reservas") //
 				.contentType(MediaType.APPLICATION_JSON) //
@@ -161,14 +168,14 @@ public class ReservaControllerIntegrationTest {
 
 	@Test
 	public void updateReserva_InvalidTest() throws Exception {
-		
-		String reservaJson = "{ "
-				+ "	\"id\":3 ,"
-				+ " \"reuniao\":{ \"id\":1 }, "
-				+ " \"data\"   :\"2019-09-06\", "
-				+ " \"sala\"   :{ \"id\":1 }, "
-				+ " \"horario\":{ \"id\":1 }"
-		+ "}";
+
+		String reservaJson = "{ " //
+				+ "	\"id\":3 ," //
+				+ " \"reuniao\":{ \"id\":1 }, " //
+				+ " \"data\"   :\"2019-09-06\", " //
+				+ " \"sala\"   :{ \"id\":1 }, " //
+				+ " \"horario\":{ \"id\":1 }" //
+				+ "}";
 
 		mvc.perform(put("/reservas") //
 				.contentType(MediaType.APPLICATION_JSON) //

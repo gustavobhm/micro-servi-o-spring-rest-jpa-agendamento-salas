@@ -41,8 +41,7 @@ public class ReservaController {
 	@GetMapping("/filtrar")
 	public List<Reserva> getReservasBy( //
 			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date data, //
-			@RequestParam Integer idSala) //
-			throws BadRequestException {
+			@RequestParam Integer idSala) {
 		return reservaService.getReservasBy(data, idSala);
 	}
 

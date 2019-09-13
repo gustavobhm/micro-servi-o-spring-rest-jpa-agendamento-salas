@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
 import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.repository.ReservaRepository;
@@ -21,19 +22,12 @@ public class ReservaService {
 	}
 
 	public Reserva get(int id) throws BadRequestException {
-		try {
-			return reservaRepository.findById(id).get();
-		} catch (Exception e) {
-			throw new BadRequestException(e.getMessage());
-		}
+			return reservaRepository.findById(id)
+					.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto()));
 	}
 
-	public List<Reserva> getReservasBy(Date data, Integer idSala) throws BadRequestException {
-		try {
-			return reservaRepository.findByDataAndSalaIdOrderByHorarioIdAsc(data, idSala);
-		} catch (Exception e) {
-			throw new BadRequestException(e.getMessage());
-		}
+	public List<Reserva> getReservasBy(Date data, Integer idSala) {
+		return reservaRepository.findByDataAndSalaIdOrderByHorarioIdAsc(data, idSala);
 	}
 
 	public Reserva add(Reserva reserva) throws BadRequestException {
@@ -45,16 +39,13 @@ public class ReservaService {
 	}
 
 	public Reserva edit(Reserva reserva) throws BadRequestException {
-		try {
-			Reserva r = reservaRepository.findById(reserva.getId()).get();
-			r.setData(reserva.getData());
-			r.setHorario(reserva.getHorario());
-			r.setReuniao(reserva.getReuniao());
-			r.setSala(reserva.getSala());
-			return reservaRepository.save(r);
-		} catch (Exception e) {
-			throw new BadRequestException(e.getMessage());
-		}
+		Reserva r = reservaRepository.findById(reserva.getId())
+				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto()));
+		r.setData(reserva.getData());
+		r.setHorario(reserva.getHorario());
+		r.setReuniao(reserva.getReuniao());
+		r.setSala(reserva.getSala());
+		return reservaRepository.save(r);
 	}
 
 	public void delete(int id) throws BadRequestException {

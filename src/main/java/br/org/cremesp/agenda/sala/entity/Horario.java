@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 		name = "HORARIO", //
 		uniqueConstraints = @UniqueConstraint(columnNames = { "HORA" }) //
 )
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id", scope= Horario.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Horario.class)
 public class Horario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -49,6 +49,6 @@ public class Horario implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "horario")
 	@JsonIgnore
-	private List<Reserva> reservas = new ArrayList<Reserva>();
+	private List<Reserva> reservas = new ArrayList<>();
 
 }
