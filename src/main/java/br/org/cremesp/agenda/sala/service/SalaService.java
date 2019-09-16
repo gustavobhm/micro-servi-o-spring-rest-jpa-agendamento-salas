@@ -22,7 +22,7 @@ public class SalaService {
 
 	public Sala get(int id) throws BadRequestException {
 		return salaRepository.findById(id)
-				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto()));
+				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_SALA_FIND_ERRO.getTexto()));
 	}
 
 	public List<Sala> getSalasBy(Integer qtdPessoas, Boolean impressora) {
@@ -33,13 +33,13 @@ public class SalaService {
 		try {
 			return salaRepository.save(sala);
 		} catch (Exception e) {
-			throw new BadRequestException(e.getMessage());
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_SALA_SAVE_ERRO.getTexto());
 		}
 	}
 
 	public Sala edit(Sala sala) throws BadRequestException {
 		Sala s = salaRepository.findById(sala.getId())
-				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_ERRO.getTexto()));
+				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_SALA_UPDATE_ERRO.getTexto()));
 		s.setNome(sala.getNome());
 		s.setAndar(sala.getAndar());
 		s.setQtdPessoas(sala.getQtdPessoas());
@@ -51,7 +51,7 @@ public class SalaService {
 		try {
 			salaRepository.deleteById(id);
 		} catch (Exception e) {
-			throw new BadRequestException(e.getMessage());
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_SALA_DELETE_ERRO.getTexto());
 		}
 
 	}

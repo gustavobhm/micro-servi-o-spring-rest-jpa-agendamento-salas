@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 		name = "REUNIAO", //
 		uniqueConstraints = @UniqueConstraint(columnNames = { "ID_SOLICITANTE", "TEMA" }) //
 )
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Reuniao.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.None.class)
 public class Reuniao implements Serializable {
 
 	private static final long serialVersionUID = 1L;

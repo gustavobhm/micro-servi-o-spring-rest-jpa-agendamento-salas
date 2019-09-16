@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 		name = "SALA", //
 		uniqueConstraints = @UniqueConstraint(columnNames = { "NOME" }) //
 )
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Sala.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.None.class)
 public class Sala implements Serializable {
 
 	private static final long serialVersionUID = 1L;

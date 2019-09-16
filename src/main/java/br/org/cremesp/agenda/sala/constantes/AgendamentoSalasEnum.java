@@ -2,10 +2,26 @@ package br.org.cremesp.agenda.sala.constantes;
 
 public enum AgendamentoSalasEnum {
 	
-	MSG_AGENDAMENTO("AGENDAMENTO"),
-	MSG_SUCESSO("SUCESSO"),
-	MSG_ERRO("ERRO")
-
+	MSG_HORARIO_FIND_ERRO("Hora não encontrado!"),
+	MSG_HORARIO_SAVE_ERRO("A hora não foi salva!"),
+	MSG_HORARIO_UPDATE_ERRO("A hora não foi atualizada!"),
+	MSG_HORARIO_DELETE_ERRO("A hora não foi excluída!"),
+	
+	MSG_RESERVA_FIND_ERRO("Reserva não encontrado!"),
+	MSG_RESERVA_SAVE_ERRO("A reserva não foi salva!"),
+	MSG_RESERVA_UPDATE_ERRO("A reserva não foi atualizada!"),
+	MSG_RESERVA_DELETE_ERRO("A reserva não foi excluída!"),
+	
+	MSG_REUNIAO_FIND_ERRO("Reunião não encontrado!"),
+	MSG_REUNIAO_SAVE_ERRO("A reunião não foi salva!"),
+	MSG_REUNIAO_UPDATE_ERRO("A reunião não foi atualizada!"),
+	MSG_REUNIAO_DELETE_ERRO("A reunião não foi excluída!"),
+	
+	MSG_SALA_FIND_ERRO("Sala não encontrado!"),
+	MSG_SALA_SAVE_ERRO("A sala não foi salva!"),
+	MSG_SALA_UPDATE_ERRO("A sala não foi atualizada!"),
+	MSG_SALA_DELETE_ERRO("A sala não foi excluída!")	
+	
 	;
 	
 	private String texto;
