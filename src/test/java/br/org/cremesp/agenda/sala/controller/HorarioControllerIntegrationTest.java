@@ -41,7 +41,7 @@ public class HorarioControllerIntegrationTest {
 	private MockMvc mvc;
 
 	@Autowired
-	private HorarioRepository repository;
+	private HorarioRepository repository; 
 
 	private Gson gson = new Gson();
 
