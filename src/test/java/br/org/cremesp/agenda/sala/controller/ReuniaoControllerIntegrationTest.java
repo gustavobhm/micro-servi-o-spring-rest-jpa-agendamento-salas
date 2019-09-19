@@ -48,10 +48,12 @@ public class ReuniaoControllerIntegrationTest {
 	@Before
 	public void init() {
 
-		Reuniao reuniao1 = new Reuniao(null, 2, 1, "Reunião 1", 10, true, true, true, true, true, true, true, 10);
+		Reuniao reuniao1 = new Reuniao(null, 2, "Responsável 1", "Reunião 1", 10, true, true, true, true, true, true,
+				true, 10);
 		repository.saveAndFlush(reuniao1);
 
-		Reuniao reuniao2 = new Reuniao(null, 4, 3, "Reunião 2", 20, true, false, true, true, false, true, false, 20);
+		Reuniao reuniao2 = new Reuniao(null, 4, "Responsável 2", "Reunião 2", 20, true, false, true, true, false, true,
+				false, 20);
 		repository.saveAndFlush(reuniao2);
 
 	}
@@ -89,7 +91,8 @@ public class ReuniaoControllerIntegrationTest {
 	@Test
 	public void addReuniao_ValidTest() throws Exception {
 
-		Reuniao reuniao = new Reuniao(null, 2, 1, "Reunião 3", 10, true, true, true, true, true, true, true, 10);
+		Reuniao reuniao = new Reuniao(null, 2, "Responsável 1", "Reunião 3", 10, true, true, true, true, true, true,
+				true, 10);
 
 		mvc.perform(post("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
@@ -100,7 +103,8 @@ public class ReuniaoControllerIntegrationTest {
 	@Test
 	public void addReuniao_InvalidTest() throws Exception {
 
-		Reuniao reuniao = new Reuniao(null, 2, 1, "Reunião 1", 10, true, true, true, true, true, true, true, 10);
+		Reuniao reuniao = new Reuniao(null, 2, "Responsável 1", "Reunião 1", 10, true, true, true, true, true, true,
+				true, 10);
 
 		mvc.perform(post("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
@@ -111,7 +115,8 @@ public class ReuniaoControllerIntegrationTest {
 	@Test
 	public void updateReuniao_ValidTest() throws Exception {
 
-		Reuniao reuniao = new Reuniao(2, 2, 1, "Reunião 2 update", 10, true, true, true, true, true, true, true, 10);
+		Reuniao reuniao = new Reuniao(2, 2, "Responsável 1", "Reunião 2 update", 10, true, true, true, true, true, true,
+				true, 10);
 
 		mvc.perform(put("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
@@ -122,7 +127,8 @@ public class ReuniaoControllerIntegrationTest {
 	@Test
 	public void updateReuniao_InvalidTest() throws Exception {
 
-		Reuniao reuniao = new Reuniao(3, 2, 1, "Reunião 3 update", 10, true, true, true, true, true, true, true, 10);		
+		Reuniao reuniao = new Reuniao(3, 2, "Responsável 1", "Reunião 3 update", 10, true, true, true, true, true, true,
+				true, 10);
 
 		mvc.perform(put("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //

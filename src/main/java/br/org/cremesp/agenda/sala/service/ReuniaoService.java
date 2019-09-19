@@ -40,7 +40,7 @@ public class ReuniaoService {
 		r.setExtraAgua(reuniao.getExtraAgua());
 		r.setExtraBiscoito(reuniao.getExtraBiscoito());
 		r.setExtraCafe(reuniao.getExtraCafe());
-		r.setIdResponsavel(reuniao.getIdResponsavel());
+		r.setResponsavel(reuniao.getResponsavel());
 		r.setIdSolicitante(reuniao.getIdSolicitante());
 		r.setImpressora(reuniao.getImpressora());
 		r.setProjetor(reuniao.getProjetor());

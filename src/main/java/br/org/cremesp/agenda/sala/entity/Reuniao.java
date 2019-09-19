@@ -38,13 +38,13 @@ public class Reuniao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public Reuniao(Integer id, Integer idSolicitante, Integer idResponsavel, String tema, @NotNull Integer qtdPessoas,
+	public Reuniao(Integer id, Integer idSolicitante, String responsavel, String tema, @NotNull Integer qtdPessoas,
 			@NotNull Boolean publicoInterno, Boolean publicoExterno, Boolean projetor, Boolean impressora,
 			Boolean extraAgua, Boolean extraCafe, Boolean extraBiscoito, Integer qtdNotebooks) {
 		super();
 		this.id = id;
 		this.idSolicitante = idSolicitante;
-		this.idResponsavel = idResponsavel;
+		this.responsavel = responsavel;
 		this.tema = tema;
 		this.qtdPessoas = qtdPessoas;
 		this.publicoInterno = publicoInterno;
@@ -65,8 +65,8 @@ public class Reuniao implements Serializable {
 	@Column(name = "ID_SOLICITANTE", nullable = false)
 	private Integer idSolicitante;
 
-	@Column(name = "ID_RESPONSAVEL", nullable = false)
-	private Integer idResponsavel;
+	@Column(name = "RESPONSAVEL", nullable = false)
+	private String responsavel;
 
 	@Column(name = "TEMA", nullable = false)
 	private String tema;

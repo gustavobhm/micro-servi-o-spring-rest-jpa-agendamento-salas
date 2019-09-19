@@ -205,7 +205,7 @@ public class ReservaControllerIntegrationTest {
 		DateFormat formato = new SimpleDateFormat("yy-MM-dd", Locale.ENGLISH);
 		Date data = formato.parse(stringData);
 
-		Reuniao reuniao = new Reuniao(null, 2, 1, temaReuniao, 10, true, true, true, true, true, true, true, 10);
+		Reuniao reuniao = new Reuniao(null, 2, "Responsável 1", temaReuniao, 10, true, true, true, true, true, true, true, 10);
 		reuniaoRepository.saveAndFlush(reuniao);
 
 		Sala sala = new Sala(null, nomeSala, "1º", 10, true);
