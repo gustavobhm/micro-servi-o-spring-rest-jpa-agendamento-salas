@@ -34,13 +34,15 @@ public class ReservaService {
 		try {
 			return reservaRepository.save(reserva);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_RESERVA_SAVE_ERRO.getTexto());
+			throw new BadRequestException(
+					AgendamentoSalasEnum.MSG_RESERVA_SAVE_ERRO.getTexto() + " -> " + e.getMessage());
 		}
 	}
 
 	public Reserva edit(Reserva reserva) throws BadRequestException {
 		Reserva r = reservaRepository.findById(reserva.getId())
-				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_RESERVA_UPDATE_ERRO.getTexto()));
+				.orElseThrow(() -> new BadRequestException(AgendamentoSalasEnum.MSG_RESERVA_UPDATE_ERRO.getTexto()
+						+ " -> " + AgendamentoSalasEnum.MSG_RESERVA_FIND_ERRO.getTexto()));
 		r.setData(reserva.getData());
 		r.setHorario(reserva.getHorario());
 		r.setReuniao(reserva.getReuniao());
@@ -52,7 +54,8 @@ public class ReservaService {
 		try {
 			reservaRepository.deleteById(id);
 		} catch (Exception e) {
-			throw new BadRequestException(AgendamentoSalasEnum.MSG_RESERVA_DELETE_ERRO.getTexto());
+			throw new BadRequestException(
+					AgendamentoSalasEnum.MSG_RESERVA_DELETE_ERRO.getTexto() + " -> " + e.getMessage());
 		}
 
 	}
