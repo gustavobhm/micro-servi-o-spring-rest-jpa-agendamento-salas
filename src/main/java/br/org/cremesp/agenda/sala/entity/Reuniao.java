@@ -39,16 +39,15 @@ public class Reuniao implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Reuniao(Integer id, Integer idSolicitante, String responsavel, String tema, @NotNull Integer qtdPessoas,
-			@NotNull Boolean publicoInterno, Boolean publicoExterno, Boolean projetor, Boolean impressora,
-			Boolean extraAgua, Boolean extraCafe, Boolean extraBiscoito, Integer qtdNotebooks) {
+			String publico, Boolean projetor, Boolean impressora, Boolean extraAgua, Boolean extraCafe,
+			Boolean extraBiscoito, Integer qtdNotebooks) {
 		super();
 		this.id = id;
 		this.idSolicitante = idSolicitante;
 		this.responsavel = responsavel;
 		this.tema = tema;
 		this.qtdPessoas = qtdPessoas;
-		this.publicoInterno = publicoInterno;
-		this.publicoExterno = publicoExterno;
+		this.publico = publico;
 		this.projetor = projetor;
 		this.impressora = impressora;
 		this.extraAgua = extraAgua;
@@ -75,12 +74,9 @@ public class Reuniao implements Serializable {
 	@NotNull
 	private Integer qtdPessoas;
 
-	@Column(name = "PUBLICO_INTERNO", nullable = false)
+	@Column(name = "PUBLICO", nullable = false)
 	@NotNull
-	private Boolean publicoInterno;
-
-	@Column(name = "PUBLICO_EXTERNO", nullable = false)
-	private Boolean publicoExterno;
+	private String publico;
 
 	@Column(name = "PROJETOR", nullable = false)
 	private Boolean projetor;

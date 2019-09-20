@@ -31,6 +31,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.org.cremesp.agenda.sala.AgendamentoSalasApplication;
+import br.org.cremesp.agenda.sala.constantes.PublicoEnum;
 import br.org.cremesp.agenda.sala.entity.Horario;
 import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.entity.Reuniao;
@@ -106,7 +107,7 @@ public class ReservaControllerIntegrationTest {
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isBadRequest());
 	}
-	
+
 	@Test
 	public void getReservasFiltrar_ValidTest() throws Exception {
 
@@ -116,7 +117,7 @@ public class ReservaControllerIntegrationTest {
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
 				.andExpect(jsonPath("$", hasSize(1))) //
 				.andExpect(jsonPath("$[0].reuniao.tema", is("Reunião 1")));
-	}	
+	}
 
 	@Test
 	public void addReserva_ValidTest() throws Exception {
@@ -205,7 +206,8 @@ public class ReservaControllerIntegrationTest {
 		DateFormat formato = new SimpleDateFormat("yy-MM-dd", Locale.ENGLISH);
 		Date data = formato.parse(stringData);
 
-		Reuniao reuniao = new Reuniao(null, 2, "Responsável 1", temaReuniao, 10, true, true, true, true, true, true, true, 10);
+		Reuniao reuniao = new Reuniao(null, 2, "Responsável 1", temaReuniao, 10, PublicoEnum.INTERNO.getTexto(), true,
+				true, true, true, true, 10);
 		reuniaoRepository.saveAndFlush(reuniao);
 
 		Sala sala = new Sala(null, nomeSala, "1º", 10, true);

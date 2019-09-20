@@ -46,8 +46,7 @@ public class ReuniaoService {
 		r.setIdSolicitante(reuniao.getIdSolicitante());
 		r.setImpressora(reuniao.getImpressora());
 		r.setProjetor(reuniao.getProjetor());
-		r.setPublicoExterno(reuniao.getPublicoExterno());
-		r.setPublicoInterno(reuniao.getPublicoInterno());
+		r.setPublico(reuniao.getPublico());
 		r.setQtdNotebooks(reuniao.getQtdNotebooks());
 		r.setQtdPessoas(reuniao.getQtdPessoas());
 		r.setTema(reuniao.getTema());
