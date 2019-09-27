@@ -77,6 +77,17 @@ public class SalaControllerIntegrationTest {
 				.andExpect(jsonPath("$", hasSize(1))) //
 				.andExpect(jsonPath("$[0].nome", is("Sala 2")));
 	}
+	
+	@Test
+	public void getSalasFiltrarByImpressora_ValidTest() throws Exception {
+
+		mvc.perform(get("/salas/filtrar?qtdPessoas=10&impressora=true") //
+				.contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isOk()) //
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
+				.andExpect(jsonPath("$", hasSize(1))) //
+				.andExpect(jsonPath("$[0].nome", is("Sala 1")));
+	}	
 
 	@Test
 	public void getByIdSala_ValidTest() throws Exception {

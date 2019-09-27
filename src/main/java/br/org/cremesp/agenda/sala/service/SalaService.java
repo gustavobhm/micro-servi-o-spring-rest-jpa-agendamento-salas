@@ -26,7 +26,12 @@ public class SalaService {
 	}
 
 	public List<Sala> getSalasBy(Integer qtdPessoas, Boolean impressora) {
-		return salaRepository.findByQtdPessoasGreaterThanEqualAndImpressoraOrderByQtdPessoasAsc(qtdPessoas, impressora);
+		if (!impressora) {
+			return salaRepository.findByQtdPessoasGreaterThanEqualOrderByQtdPessoasAsc(qtdPessoas);
+		} else {
+			return salaRepository.findByQtdPessoasGreaterThanEqualAndImpressoraOrderByQtdPessoasAsc(qtdPessoas,
+					impressora);
+		}
 	}
 
 	public Sala add(Sala sala) throws BadRequestException {

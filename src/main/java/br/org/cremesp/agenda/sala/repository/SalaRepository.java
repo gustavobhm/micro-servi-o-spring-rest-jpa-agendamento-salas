@@ -13,5 +13,7 @@ public interface SalaRepository extends JpaRepository<Sala, Integer> {
 	public List<Sala> findAllByOrderByIdAsc();
 
 	public List<Sala> findByQtdPessoasGreaterThanEqualAndImpressoraOrderByQtdPessoasAsc(Integer qtdPessoas, Boolean impressora);
+	
+	public List<Sala> findByQtdPessoasGreaterThanEqualOrderByQtdPessoasAsc(Integer qtdPessoas);
 
 }
