@@ -120,6 +120,17 @@ public class ReservaControllerIntegrationTest {
 	}
 
 	@Test
+	public void getReservasByReuniao_ValidTest() throws Exception {
+
+		mvc.perform(get("/reservas/reuniao/1") //
+				.contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isOk()) //
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
+				.andExpect(jsonPath("$", hasSize(1))) //
+				.andExpect(jsonPath("$[0].sala.nome", is("Sala 1")));
+	}
+
+	@Test
 	public void addReserva_ValidTest() throws Exception {
 
 		String reservaJson = "{ " //
@@ -208,14 +219,14 @@ public class ReservaControllerIntegrationTest {
 
 		Reuniao reuniao = new Reuniao(null, 2, "Responsável 1", temaReuniao, 10, PublicoEnum.INTERNO.getTexto(), true,
 				true, true, true, true, 10);
-		reuniaoRepository.saveAndFlush(reuniao);
+		reuniao = reuniaoRepository.saveAndFlush(reuniao);
 
 		Sala sala = new Sala(null, nomeSala, "1º", 10, true);
-		salaRepository.saveAndFlush(sala);
+		sala = salaRepository.saveAndFlush(sala);
 
 		Horario horario = new Horario(null, hora);
-		horarioRepository.saveAndFlush(horario);
-
+		horario = horarioRepository.saveAndFlush(horario);
+		
 		return new Reserva(null, reuniao, data, sala, horario);
 
 	}

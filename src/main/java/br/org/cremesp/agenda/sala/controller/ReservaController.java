@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
+import br.org.cremesp.agenda.sala.projection.ReservaByReuniaoView;
 import br.org.cremesp.agenda.sala.service.ReservaService;
 
 @CrossOrigin(origins = "*")
@@ -36,6 +37,11 @@ public class ReservaController {
 	@GetMapping("/{id}")
 	public Reserva get(@PathVariable int id) throws BadRequestException {
 		return reservaService.get(id);
+	}
+
+	@GetMapping("/reuniao/{id}")
+	public List<ReservaByReuniaoView> getReservasByReuniao(@PathVariable int id) {
+		return reservaService.getReservasByReuniao(id);
 	}
 
 	@GetMapping("/filtrar")

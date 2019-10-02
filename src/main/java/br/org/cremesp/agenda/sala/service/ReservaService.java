@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
 import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
+import br.org.cremesp.agenda.sala.projection.ReservaByReuniaoView;
 import br.org.cremesp.agenda.sala.repository.ReservaRepository;
 
 @Service
@@ -28,6 +29,10 @@ public class ReservaService {
 
 	public List<Reserva> getReservasBy(Date data, Integer idSala) {
 		return reservaRepository.findByDataAndSalaIdOrderByHorarioIdAsc(data, idSala);
+	}
+
+	public List<ReservaByReuniaoView> getReservasByReuniao(Integer id) {
+		return reservaRepository.findDistinctByReuniaoIdOrderByDataAscSalaIdAsc(id);
 	}
 
 	public Reserva add(Reserva reserva) throws BadRequestException {
