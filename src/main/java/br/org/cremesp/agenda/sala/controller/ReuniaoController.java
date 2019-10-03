@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.org.cremesp.agenda.sala.entity.Reuniao;
@@ -33,6 +34,11 @@ public class ReuniaoController {
 	@GetMapping("/{id}")
 	public Reuniao get(@PathVariable int id) throws BadRequestException {
 		return reuniaoService.get(id);
+	}
+
+	@GetMapping("/filtrar")
+	public List<Reuniao> getReservasBy(@RequestParam Integer idSolicitante) {
+		return reuniaoService.getReunioesBy(idSolicitante);
 	}
 
 	@PostMapping

@@ -26,6 +26,10 @@ public class ReuniaoService {
 
 	}
 
+	public List<Reuniao> getReunioesBy(Integer idSolicitante) {
+		return reuniaoRepository.findByIdSolicitanteOrderByTemaAsc(idSolicitante);
+	}
+
 	public Reuniao add(Reuniao reuniao) throws BadRequestException {
 		try {
 			return reuniaoRepository.save(reuniao);

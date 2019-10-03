@@ -88,6 +88,17 @@ public class ReuniaoControllerIntegrationTest {
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isBadRequest());
 	}
+	
+	@Test
+	public void getReunioesFiltrar_ValidTest() throws Exception {
+
+		mvc.perform(get("/reunioes/filtrar?idSolicitante=4") //
+				.contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isOk()) //
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
+				.andExpect(jsonPath("$", hasSize(1))) //
+				.andExpect(jsonPath("$[0].tema", is("Reunião 2")));
+	}	
 
 	@Test
 	public void addReuniao_ValidTest() throws Exception {

@@ -11,4 +11,6 @@ import br.org.cremesp.agenda.sala.entity.Reuniao;
 public interface ReuniaoRepository extends JpaRepository<Reuniao, Integer> {
 
 	public List<Reuniao> findAllByOrderByIdAsc();
+
+	public List<Reuniao> findByIdSolicitanteOrderByTemaAsc(Integer idSolicitante);
 }
