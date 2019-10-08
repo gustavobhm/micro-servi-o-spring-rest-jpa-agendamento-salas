@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
@@ -38,9 +39,9 @@ public class ReservaService {
 	public Reserva add(Reserva reserva) throws BadRequestException {
 		try {
 			return reservaRepository.save(reserva);
-		} catch (Exception e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new BadRequestException(
-					AgendamentoSalasEnum.MSG_RESERVA_SAVE_ERRO.getTexto() + " -> " + e.getMessage());
+					AgendamentoSalasEnum.MSG_RESERVA_SAVE_CONSTRAINT_ERRO.getTexto());
 		}
 	}
 
@@ -52,7 +53,13 @@ public class ReservaService {
 		r.setHorario(reserva.getHorario());
 		r.setReuniao(reserva.getReuniao());
 		r.setSala(reserva.getSala());
-		return reservaRepository.save(r);
+		
+		try {
+			return reservaRepository.save(r);
+		} catch (DataIntegrityViolationException e) {
+			throw new BadRequestException(
+					AgendamentoSalasEnum.MSG_RESERVA_UPDATE_CONSTRAINT_ERRO.getTexto());
+		}
 	}
 
 	public void delete(int id) throws BadRequestException {

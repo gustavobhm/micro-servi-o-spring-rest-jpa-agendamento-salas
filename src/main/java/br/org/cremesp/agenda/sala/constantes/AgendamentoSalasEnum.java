@@ -9,7 +9,9 @@ public enum AgendamentoSalasEnum {
 	
 	MSG_RESERVA_FIND_ERRO("Reserva não encontrada!"),
 	MSG_RESERVA_SAVE_ERRO("A reserva não foi salva!"),
+	MSG_RESERVA_SAVE_CONSTRAINT_ERRO("A reserva não foi salva, pois já existe uma reserva com essa data, sala e horário!"),
 	MSG_RESERVA_UPDATE_ERRO("A reserva não foi atualizada!"),
+	MSG_RESERVA_UPDATE_CONSTRAINT_ERRO("A reserva não foi atualizada, pois já existe uma reserva com essa data, sala e horário!"),
 	MSG_RESERVA_DELETE_ERRO("A reserva não foi excluída!"),
 	
 	MSG_REUNIAO_FIND_ERRO("Reunião não encontrada!"),

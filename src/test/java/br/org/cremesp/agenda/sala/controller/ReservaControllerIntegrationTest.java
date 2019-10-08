@@ -196,6 +196,24 @@ public class ReservaControllerIntegrationTest {
 	}
 
 	@Test
+	public void updateReserva_DataIntegrityViolationException_InvalidTest() throws Exception {
+
+		String reservaJson = "{ " //
+				+ "	\"id\":2 ," //
+				+ " \"reuniao\":{ \"id\":1 }, " //
+				+ " \"data\"   :\"2019-09-12\", " //
+				+ " \"sala\"   :{ \"id\":1 }, " //
+				+ " \"horario\":{ \"id\":1 }" //
+				+ "}";
+
+		mvc.perform(put("/reservas") //
+				.contentType(MediaType.APPLICATION_JSON) //
+				.content(reservaJson)) //
+				.andExpect(status().isBadRequest());
+
+	}
+
+	@Test
 	public void deleteReserva_ValidTest() throws Exception {
 
 		mvc.perform(delete("/reservas/1") //
@@ -226,7 +244,7 @@ public class ReservaControllerIntegrationTest {
 
 		Horario horario = new Horario(null, hora);
 		horario = horarioRepository.saveAndFlush(horario);
-		
+
 		return new Reserva(null, reuniao, data, sala, horario);
 
 	}
