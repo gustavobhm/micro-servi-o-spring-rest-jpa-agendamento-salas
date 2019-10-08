@@ -3,6 +3,7 @@ package br.org.cremesp.agenda.sala.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
@@ -33,9 +34,8 @@ public class ReuniaoService {
 	public Reuniao add(Reuniao reuniao) throws BadRequestException {
 		try {
 			return reuniaoRepository.save(reuniao);
-		} catch (Exception e) {
-			throw new BadRequestException(
-					AgendamentoSalasEnum.MSG_REUNIAO_SAVE_ERRO.getTexto() + " -> " + e.getMessage());
+		} catch (DataIntegrityViolationException e) {
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_REUNIAO_SAVE_CONSTRAINT_ERRO.getTexto());
 		}
 	}
 
@@ -54,7 +54,12 @@ public class ReuniaoService {
 		r.setQtdNotebooks(reuniao.getQtdNotebooks());
 		r.setQtdPessoas(reuniao.getQtdPessoas());
 		r.setTema(reuniao.getTema());
-		return reuniaoRepository.save(r);
+
+		try {
+			return reuniaoRepository.save(r);
+		} catch (DataIntegrityViolationException e) {
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_REUNIAO_UPDATE_CONSTRAINT_ERRO.getTexto());
+		}
 	}
 
 	public void delete(int id) throws BadRequestException {

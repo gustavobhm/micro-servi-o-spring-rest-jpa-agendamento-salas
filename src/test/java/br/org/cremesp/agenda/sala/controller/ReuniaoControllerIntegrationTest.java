@@ -88,7 +88,7 @@ public class ReuniaoControllerIntegrationTest {
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isBadRequest());
 	}
-	
+
 	@Test
 	public void getReunioesFiltrar_ValidTest() throws Exception {
 
@@ -98,7 +98,7 @@ public class ReuniaoControllerIntegrationTest {
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
 				.andExpect(jsonPath("$", hasSize(1))) //
 				.andExpect(jsonPath("$[0].tema", is("Reunião 2")));
-	}	
+	}
 
 	@Test
 	public void addReuniao_ValidTest() throws Exception {
@@ -141,6 +141,18 @@ public class ReuniaoControllerIntegrationTest {
 
 		Reuniao reuniao = new Reuniao(3, 2, "Responsável 1", "Reunião 3 update", 10, PublicoEnum.INTERNO.getTexto(),
 				true, true, true, true, true, 10);
+
+		mvc.perform(put("/reunioes") //
+				.contentType(MediaType.APPLICATION_JSON) //
+				.content(gson.toJson(reuniao))) //
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void updateReuniao_DataIntegrityViolationException_InvalidTest() throws Exception {
+
+		Reuniao reuniao = new Reuniao(2, 2, "Responsável 1", "Reunião 1", 10, PublicoEnum.INTERNO.getTexto(), true,
+				true, true, true, true, 10);
 
 		mvc.perform(put("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //

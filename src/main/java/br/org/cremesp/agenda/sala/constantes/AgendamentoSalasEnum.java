@@ -14,7 +14,9 @@ public enum AgendamentoSalasEnum {
 	
 	MSG_REUNIAO_FIND_ERRO("Reunião não encontrada!"),
 	MSG_REUNIAO_SAVE_ERRO("A reunião não foi salva!"),
+	MSG_REUNIAO_SAVE_CONSTRAINT_ERRO("A reunião não foi salva, pois já existe uma reunião com esse tema para o solicitante!"),
 	MSG_REUNIAO_UPDATE_ERRO("A reunião não foi atualizada!"),
+	MSG_REUNIAO_UPDATE_CONSTRAINT_ERRO("A reunião não foi atualizada, pois já existe uma reunião com esse tema para o solicitante!"),
 	MSG_REUNIAO_DELETE_ERRO("A reunião não foi excluída!"),
 	
 	MSG_SALA_FIND_ERRO("Sala não encontrada!"),
