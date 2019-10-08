@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.org.cremesp.agenda.sala.entity.Reserva;
@@ -16,6 +15,10 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
 	public List<Reserva> findAllByOrderByIdAsc();
 
 	public List<Reserva> findByDataAndSalaIdOrderByHorarioIdAsc(Date data, Integer idSala);
+	
+	public List<Reserva> findByReuniaoIdOrderByIdAsc(Integer idReuniao);
 
-	public List<ReservaByReuniaoView> findDistinctByReuniaoIdOrderByDataAscSalaIdAsc(@Param("idReuniao") Integer id);
+	public List<ReservaByReuniaoView> findDistinctByReuniaoIdOrderByDataAscSalaIdAsc(Integer idReuniao);
+
+	public void deleteByReuniaoId(Integer idReuniao);
 }

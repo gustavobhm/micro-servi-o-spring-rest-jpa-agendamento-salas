@@ -229,6 +229,22 @@ public class ReservaControllerIntegrationTest {
 				.andExpect(status().isBadRequest());
 	}
 
+	@Test
+	public void deleteReservasByReuniao_ValidTest() throws Exception {
+
+		mvc.perform(delete("/reservas/reuniao/1") //
+				.contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void deleteReservaByReuniao_InvalidTest() throws Exception {
+
+		mvc.perform(delete("/reservas/reuniao/3") //
+				.contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isBadRequest());
+	}
+
 	private Reserva newReserva(String temaReuniao, String stringData, String nomeSala, String hora)
 			throws ParseException {
 

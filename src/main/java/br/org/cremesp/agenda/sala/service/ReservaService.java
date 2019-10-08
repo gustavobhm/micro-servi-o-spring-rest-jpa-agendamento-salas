@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
 import br.org.cremesp.agenda.sala.entity.Reserva;
@@ -32,16 +33,15 @@ public class ReservaService {
 		return reservaRepository.findByDataAndSalaIdOrderByHorarioIdAsc(data, idSala);
 	}
 
-	public List<ReservaByReuniaoView> getReservasByReuniao(Integer id) {
-		return reservaRepository.findDistinctByReuniaoIdOrderByDataAscSalaIdAsc(id);
+	public List<ReservaByReuniaoView> getReservasByReuniao(Integer idReuniao) {
+		return reservaRepository.findDistinctByReuniaoIdOrderByDataAscSalaIdAsc(idReuniao);
 	}
 
 	public Reserva add(Reserva reserva) throws BadRequestException {
 		try {
 			return reservaRepository.save(reserva);
 		} catch (DataIntegrityViolationException e) {
-			throw new BadRequestException(
-					AgendamentoSalasEnum.MSG_RESERVA_SAVE_CONSTRAINT_ERRO.getTexto());
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_RESERVA_SAVE_CONSTRAINT_ERRO.getTexto());
 		}
 	}
 
@@ -53,12 +53,11 @@ public class ReservaService {
 		r.setHorario(reserva.getHorario());
 		r.setReuniao(reserva.getReuniao());
 		r.setSala(reserva.getSala());
-		
+
 		try {
 			return reservaRepository.save(r);
 		} catch (DataIntegrityViolationException e) {
-			throw new BadRequestException(
-					AgendamentoSalasEnum.MSG_RESERVA_UPDATE_CONSTRAINT_ERRO.getTexto());
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_RESERVA_UPDATE_CONSTRAINT_ERRO.getTexto());
 		}
 	}
 
@@ -69,6 +68,20 @@ public class ReservaService {
 			throw new BadRequestException(
 					AgendamentoSalasEnum.MSG_RESERVA_DELETE_ERRO.getTexto() + " -> " + e.getMessage());
 		}
+	}
+
+	@Transactional
+	public void deleteReservasByReuniao(int idReuniao) throws BadRequestException {
+
+		List<Reserva> resevas = reservaRepository.findByReuniaoIdOrderByIdAsc(idReuniao);
+
+		if (resevas.isEmpty()) {
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_RESERVA_DELETE_ERRO.getTexto() + " -> "
+					+ AgendamentoSalasEnum.MSG_RESERVA_FIND_ERRO.getTexto());
+		}
+
+		reservaRepository.deleteByReuniaoId(idReuniao);
 
 	}
+
 }

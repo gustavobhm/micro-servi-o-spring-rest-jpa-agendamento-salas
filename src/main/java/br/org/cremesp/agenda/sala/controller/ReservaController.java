@@ -39,9 +39,9 @@ public class ReservaController {
 		return reservaService.get(id);
 	}
 
-	@GetMapping("/reuniao/{id}")
-	public List<ReservaByReuniaoView> getReservasByReuniao(@PathVariable int id) {
-		return reservaService.getReservasByReuniao(id);
+	@GetMapping("/reuniao/{idReuniao}")
+	public List<ReservaByReuniaoView> getReservasByReuniao(@PathVariable int idReuniao) {
+		return reservaService.getReservasByReuniao(idReuniao);
 	}
 
 	@GetMapping("/filtrar")
@@ -65,4 +65,10 @@ public class ReservaController {
 	public void delete(@PathVariable int id) throws BadRequestException {
 		reservaService.delete(id);
 	}
+
+	@DeleteMapping("/reuniao/{idReuniao}")
+	public void deleteReservasByReuniao(@PathVariable int idReuniao) throws BadRequestException {
+		reservaService.deleteReservasByReuniao(idReuniao);
+	}
+
 }
