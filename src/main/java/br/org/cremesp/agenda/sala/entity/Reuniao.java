@@ -2,6 +2,7 @@ package br.org.cremesp.agenda.sala.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -95,6 +96,9 @@ public class Reuniao implements Serializable {
 
 	@Column(name = "QUANTIDADE_NOTEBOOKS", nullable = false)
 	private Integer qtdNotebooks;
+	
+	@Column(name = "DATA_CRIACAO", nullable = true)
+	private Date dataCriacao;	
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "reuniao")
 	@JsonIgnore
