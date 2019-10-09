@@ -96,11 +96,11 @@ public class Reuniao implements Serializable {
 
 	@Column(name = "QUANTIDADE_NOTEBOOKS", nullable = false)
 	private Integer qtdNotebooks;
-	
-	@Column(name = "DATA_CRIACAO", nullable = true)
-	private Date dataCriacao;	
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "reuniao")
+	@Column(name = "DATA_CRIACAO", nullable = true)
+	private Date dataCriacao;
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "reuniao")
 	@JsonIgnore
 	private List<Reserva> reservas = new ArrayList<>();
 
