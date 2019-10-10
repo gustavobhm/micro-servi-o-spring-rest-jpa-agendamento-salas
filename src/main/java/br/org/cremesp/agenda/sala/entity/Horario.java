@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -45,6 +46,7 @@ public class Horario implements Serializable {
 	private Integer id;
 
 	@Column(name = "HORA", nullable = false)
+	@NotNull
 	private String hora;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "horario")

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
@@ -65,9 +66,9 @@ public class ReuniaoService {
 	public void delete(int id) throws BadRequestException {
 		try {
 			reuniaoRepository.deleteById(id);
-		} catch (Exception e) {
-			throw new BadRequestException(
-					AgendamentoSalasEnum.MSG_REUNIAO_DELETE_ERRO.getTexto() + " -> " + e.getMessage());
+		} catch (EmptyResultDataAccessException e) {
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_REUNIAO_DELETE_ERRO.getTexto() + " -> "
+					+ AgendamentoSalasEnum.MSG_REUNIAO_FIND_ERRO.getTexto());
 		}
 
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,9 +65,9 @@ public class ReservaService {
 	public void delete(int id) throws BadRequestException {
 		try {
 			reservaRepository.deleteById(id);
-		} catch (Exception e) {
-			throw new BadRequestException(
-					AgendamentoSalasEnum.MSG_RESERVA_DELETE_ERRO.getTexto() + " -> " + e.getMessage());
+		} catch (EmptyResultDataAccessException e) {
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_RESERVA_DELETE_ERRO.getTexto() + " -> "
+					+ AgendamentoSalasEnum.MSG_RESERVA_FIND_ERRO.getTexto());
 		}
 	}
 

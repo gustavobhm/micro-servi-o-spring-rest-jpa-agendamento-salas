@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -50,15 +51,19 @@ public class Sala implements Serializable {
 	private Integer id;
 
 	@Column(name = "NOME", nullable = false)
+	@NotNull
 	private String nome;
 
 	@Column(name = "ANDAR", nullable = false)
+	@NotNull
 	private String andar;
 
 	@Column(name = "QUANTIDADE_PESSOAS", nullable = false)
+	@NotNull
 	private Integer qtdPessoas;
 
 	@Column(name = "IMPRESSORA", nullable = false)
+	@NotNull
 	private Boolean impressora;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sala")
