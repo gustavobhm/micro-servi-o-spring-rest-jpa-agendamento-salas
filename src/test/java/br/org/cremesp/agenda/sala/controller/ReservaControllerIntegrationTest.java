@@ -274,6 +274,7 @@ public class ReservaControllerIntegrationTest {
 				.andar("1º") //
 				.qtdPessoas(10) //
 				.impressora(true) //
+				.computador(true) //
 				.build();
 
 		sala = salaRepository.save(sala);

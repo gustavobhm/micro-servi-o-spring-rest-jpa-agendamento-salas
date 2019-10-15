@@ -60,6 +60,10 @@ public class Sala implements Serializable {
 	@Column(name = "IMPRESSORA", nullable = false)
 	@NotNull
 	private Boolean impressora;
+	
+	@Column(name = "COMPUTADOR", nullable = false)
+	@NotNull
+	private Boolean computador;	
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sala")
 	@JsonIgnore

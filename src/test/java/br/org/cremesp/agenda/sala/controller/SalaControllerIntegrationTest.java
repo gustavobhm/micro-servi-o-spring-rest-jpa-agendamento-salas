@@ -55,6 +55,7 @@ public class SalaControllerIntegrationTest {
 				.andar("1º") //
 				.qtdPessoas(10) //
 				.impressora(true) //
+				.computador(true) //
 				.build();
 
 		repository.save(sala1);
@@ -65,6 +66,7 @@ public class SalaControllerIntegrationTest {
 				.andar("2º") //
 				.qtdPessoas(20) //
 				.impressora(false) //
+				.computador(false) //
 				.build();
 
 		repository.save(sala2);
@@ -132,6 +134,7 @@ public class SalaControllerIntegrationTest {
 				.andar("3º") //
 				.qtdPessoas(30) //
 				.impressora(false) //
+				.computador(false) //
 				.build();
 
 		mvc.perform(post("/salas") //
@@ -149,6 +152,7 @@ public class SalaControllerIntegrationTest {
 				.andar("3º") //
 				.qtdPessoas(30) //
 				.impressora(false) //
+				.computador(false) //
 				.build();
 
 		mvc.perform(post("/salas") //
@@ -166,6 +170,7 @@ public class SalaControllerIntegrationTest {
 				.andar("2º") //
 				.qtdPessoas(20) //
 				.impressora(true) //
+				.computador(false) //
 				.build();
 
 		mvc.perform(put("/salas") //
@@ -183,6 +188,7 @@ public class SalaControllerIntegrationTest {
 				.andar("2º") //
 				.qtdPessoas(20) //
 				.impressora(true) //
+				.computador(false) //
 				.build();
 
 		mvc.perform(put("/salas") //
