@@ -49,12 +49,38 @@ public class ReuniaoControllerIntegrationTest {
 	@Before
 	public void init() {
 
-		Reuniao reuniao1 = new Reuniao(null, 2, "Responsável 1", "Reunião 1", 10, PublicoEnum.INTERNO.getTexto(), true,
-				true, true, true, true, 10);
+		Reuniao reuniao1 = Reuniao.builder() //
+				.id(null) //
+				.idSolicitante(2) //
+				.responsavel("Responsável 1") //
+				.tema("Reunião 1") //
+				.qtdPessoas(10) //
+				.publico(PublicoEnum.INTERNO.getTexto()) //
+				.projetor(true) //
+				.impressora(true) //
+				.extraAgua(true) //
+				.extraCafe(true) //
+				.extraBiscoito(true) //
+				.qtdNotebooks(10) //
+				.build();
+
 		repository.saveAndFlush(reuniao1);
 
-		Reuniao reuniao2 = new Reuniao(null, 4, "Responsável 2", "Reunião 2", 20, PublicoEnum.EXTERNO.getTexto(), true,
-				true, false, true, false, 20);
+		Reuniao reuniao2 = Reuniao.builder() //
+				.id(null) //
+				.idSolicitante(4) //
+				.responsavel("Responsável 2") //
+				.tema("Reunião 2") //
+				.qtdPessoas(20) //
+				.publico(PublicoEnum.EXTERNO.getTexto()) //
+				.projetor(true) //
+				.impressora(true) //
+				.extraAgua(false) //
+				.extraCafe(true) //
+				.extraBiscoito(false) //
+				.qtdNotebooks(20) //
+				.build();
+
 		repository.saveAndFlush(reuniao2);
 
 	}
@@ -103,8 +129,20 @@ public class ReuniaoControllerIntegrationTest {
 	@Test
 	public void addReuniao_ValidTest() throws Exception {
 
-		Reuniao reuniao = new Reuniao(null, 2, "Responsável 1", "Reunião 3", 10, PublicoEnum.INTERNO.getTexto(), true,
-				true, true, true, true, 10);
+		Reuniao reuniao = Reuniao.builder() //
+				.id(null) //
+				.idSolicitante(2) //
+				.responsavel("Responsável 1") //
+				.tema("Reunião 3") //
+				.qtdPessoas(10) //
+				.publico(PublicoEnum.INTERNO.getTexto()) //
+				.projetor(true) //
+				.impressora(true) //
+				.extraAgua(true) //
+				.extraCafe(true) //
+				.extraBiscoito(true) //
+				.qtdNotebooks(10) //
+				.build();
 
 		mvc.perform(post("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
@@ -113,22 +151,22 @@ public class ReuniaoControllerIntegrationTest {
 	}
 
 	@Test
-	public void addReuniao_InvalidTest() throws Exception {
-
-		Reuniao reuniao = new Reuniao(null, 2, "Responsável 1", "Reunião 1", 10, PublicoEnum.INTERNO.getTexto(), true,
-				true, true, true, true, 10);
-
-		mvc.perform(post("/reunioes") //
-				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(reuniao))) //
-				.andExpect(status().isBadRequest());
-	}
-
-	@Test
 	public void updateReuniao_ValidTest() throws Exception {
 
-		Reuniao reuniao = new Reuniao(2, 2, "Responsável 1", "Reunião 2 update", 10, PublicoEnum.INTERNO.getTexto(),
-				true, true, true, true, true, 10);
+		Reuniao reuniao = Reuniao.builder() //
+				.id(2) //
+				.idSolicitante(2) //
+				.responsavel("Responsável 1") //
+				.tema("Reunião 2 update") //
+				.qtdPessoas(10) //
+				.publico(PublicoEnum.INTERNO.getTexto()) //
+				.projetor(true) //
+				.impressora(true) //
+				.extraAgua(true) //
+				.extraCafe(true) //
+				.extraBiscoito(true) //
+				.qtdNotebooks(10) //
+				.build();
 
 		mvc.perform(put("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
@@ -139,20 +177,20 @@ public class ReuniaoControllerIntegrationTest {
 	@Test
 	public void updateReuniao_InvalidTest() throws Exception {
 
-		Reuniao reuniao = new Reuniao(3, 2, "Responsável 1", "Reunião 3 update", 10, PublicoEnum.INTERNO.getTexto(),
-				true, true, true, true, true, 10);
-
-		mvc.perform(put("/reunioes") //
-				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(reuniao))) //
-				.andExpect(status().isBadRequest());
-	}
-
-	@Test
-	public void updateReuniao_DataIntegrityViolationException_InvalidTest() throws Exception {
-
-		Reuniao reuniao = new Reuniao(2, 2, "Responsável 1", "Reunião 1", 10, PublicoEnum.INTERNO.getTexto(), true,
-				true, true, true, true, 10);
+		Reuniao reuniao = Reuniao.builder() //
+				.id(3) //
+				.idSolicitante(2) //
+				.responsavel("Responsável 1") //
+				.tema("Reunião 3 update") //
+				.qtdPessoas(10) //
+				.publico(PublicoEnum.INTERNO.getTexto()) //
+				.projetor(true) //
+				.impressora(true) //
+				.extraAgua(true) //
+				.extraCafe(true) //
+				.extraBiscoito(true) //
+				.qtdNotebooks(10) //
+				.build();
 
 		mvc.perform(put("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //

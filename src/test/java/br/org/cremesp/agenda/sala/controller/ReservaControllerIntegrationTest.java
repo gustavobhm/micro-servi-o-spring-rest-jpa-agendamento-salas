@@ -251,17 +251,47 @@ public class ReservaControllerIntegrationTest {
 		DateFormat formato = new SimpleDateFormat("yy-MM-dd", Locale.ENGLISH);
 		Date data = formato.parse(stringData);
 
-		Reuniao reuniao = new Reuniao(null, 2, "Responsável 1", temaReuniao, 10, PublicoEnum.INTERNO.getTexto(), true,
-				true, true, true, true, 10);
+		Reuniao reuniao = Reuniao.builder() //
+				.id(null) //
+				.idSolicitante(2) //
+				.responsavel("Responsável 1") //
+				.tema(temaReuniao) //
+				.qtdPessoas(10) //
+				.publico(PublicoEnum.INTERNO.getTexto()) //
+				.projetor(true) //
+				.impressora(true) //
+				.extraAgua(true) //
+				.extraCafe(true) //
+				.extraBiscoito(true) //
+				.qtdNotebooks(10) //
+				.build();
+
 		reuniao = reuniaoRepository.saveAndFlush(reuniao);
 
-		Sala sala = new Sala(null, nomeSala, "1º", 10, true);
-		sala = salaRepository.saveAndFlush(sala);
+		Sala sala = Sala.builder() //
+				.id(null) //
+				.nome(nomeSala) //
+				.andar("1º") //
+				.qtdPessoas(10) //
+				.impressora(true) //
+				.build();
 
-		Horario horario = new Horario(null, hora);
+		sala = salaRepository.save(sala);
+
+		Horario horario = Horario.builder() //
+				.id(null) //
+				.hora(hora) //
+				.build();
+
 		horario = horarioRepository.saveAndFlush(horario);
 
-		return new Reserva(null, reuniao, data, sala, horario);
+		return Reserva.builder() //
+				.id(null) //
+				.reuniao(reuniao) //
+				.data(data) //
+				.sala(sala) //
+				.horario(horario) //
+				.build();
 
 	}
 

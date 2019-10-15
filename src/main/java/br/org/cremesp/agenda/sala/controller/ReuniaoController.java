@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.org.cremesp.agenda.sala.dto.ReuniaoDTO;
 import br.org.cremesp.agenda.sala.entity.Reuniao;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.service.ReuniaoService;
@@ -42,13 +43,13 @@ public class ReuniaoController {
 	}
 
 	@PostMapping
-	public Reuniao add(@RequestBody Reuniao reuniao) throws BadRequestException {
-		return reuniaoService.add(reuniao);
+	public Reuniao add(@RequestBody ReuniaoDTO reuniaoDTO) {
+		return reuniaoService.add(reuniaoDTO.convertToEntity());
 	}
 
 	@PutMapping
-	public Reuniao edit(@RequestBody Reuniao reuniao) throws BadRequestException {
-		return reuniaoService.edit(reuniao);
+	public Reuniao edit(@RequestBody ReuniaoDTO reuniaoDTO) throws BadRequestException {
+		return reuniaoService.edit(reuniaoDTO.convertToEntity());
 	}
 
 	@DeleteMapping("/{id}")

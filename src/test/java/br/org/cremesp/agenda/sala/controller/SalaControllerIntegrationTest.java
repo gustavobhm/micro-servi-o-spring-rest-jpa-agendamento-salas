@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.google.gson.Gson;
 
 import br.org.cremesp.agenda.sala.AgendamentoSalasApplication;
+import br.org.cremesp.agenda.sala.dto.SalaDTO;
 import br.org.cremesp.agenda.sala.entity.Sala;
 import br.org.cremesp.agenda.sala.repository.SalaRepository;
 
@@ -48,11 +49,25 @@ public class SalaControllerIntegrationTest {
 	@Before
 	public void init() {
 
-		Sala sala1 = new Sala(null, "Sala 1", "1º", 10, true);
-		repository.saveAndFlush(sala1);
+		Sala sala1 = Sala.builder() //
+				.id(null) //
+				.nome("Sala 1") //
+				.andar("1º") //
+				.qtdPessoas(10) //
+				.impressora(true) //
+				.build();
 
-		Sala sala2 = new Sala(null, "Sala 2", "2º", 20, false);
-		repository.saveAndFlush(sala2);
+		repository.save(sala1);
+
+		Sala sala2 = Sala.builder() //
+				.id(null) //
+				.nome("Sala 2") //
+				.andar("2º") //
+				.qtdPessoas(20) //
+				.impressora(false) //
+				.build();
+
+		repository.save(sala2);
 
 	}
 
@@ -77,7 +92,7 @@ public class SalaControllerIntegrationTest {
 				.andExpect(jsonPath("$", hasSize(1))) //
 				.andExpect(jsonPath("$[0].nome", is("Sala 2")));
 	}
-	
+
 	@Test
 	public void getSalasFiltrarByImpressora_ValidTest() throws Exception {
 
@@ -87,7 +102,7 @@ public class SalaControllerIntegrationTest {
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
 				.andExpect(jsonPath("$", hasSize(1))) //
 				.andExpect(jsonPath("$[0].nome", is("Sala 1")));
-	}	
+	}
 
 	@Test
 	public void getByIdSala_ValidTest() throws Exception {
@@ -111,44 +126,68 @@ public class SalaControllerIntegrationTest {
 	@Test
 	public void addSala_ValidTest() throws Exception {
 
-		Sala sala = new Sala(null, "Sala 3", "3º", 30, false);
+		SalaDTO salaDTO = SalaDTO.builder() //
+				.id(null) //
+				.nome("Sala 3") //
+				.andar("3º") //
+				.qtdPessoas(30) //
+				.impressora(false) //
+				.build();
 
 		mvc.perform(post("/salas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(sala))) //
+				.content(gson.toJson(salaDTO))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void addSala_InvalidTest() throws Exception {
 
-		Sala sala = new Sala(null, "Sala 2", "3º", 30, false);
+		SalaDTO salaDTO = SalaDTO.builder() //
+				.id(null) //
+				.nome("Sala 2") //
+				.andar("3º") //
+				.qtdPessoas(30) //
+				.impressora(false) //
+				.build();
 
 		mvc.perform(post("/salas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(sala))) //
+				.content(gson.toJson(salaDTO))) //
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	public void updateSala_ValidTest() throws Exception {
 
-		Sala sala = new Sala(1, "Sala 1", "2º", 20, true);
+		SalaDTO salaDTO = SalaDTO.builder() //
+				.id(1) //
+				.nome("Sala 1") //
+				.andar("2º") //
+				.qtdPessoas(20) //
+				.impressora(true) //
+				.build();
 
 		mvc.perform(put("/salas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(sala))) //
+				.content(gson.toJson(salaDTO))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void updateSala_InvalidTest() throws Exception {
 
-		Sala sala = new Sala(3, "Sala 1", "2º", 20, true);
+		SalaDTO salaDTO = SalaDTO.builder() //
+				.id(3) //
+				.nome("Sala 1") //
+				.andar("2º") //
+				.qtdPessoas(20) //
+				.impressora(true) //
+				.build();
 
 		mvc.perform(put("/salas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(sala))) //
+				.content(gson.toJson(salaDTO))) //
 				.andExpect(status().isBadRequest());
 	}
 

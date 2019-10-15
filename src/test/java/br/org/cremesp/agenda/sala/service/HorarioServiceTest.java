@@ -30,7 +30,10 @@ public class HorarioServiceTest {
 	@Before
 	public void setUp() {
 
-		Horario horario = new Horario(1, "08:00 - 09:00");
+		Horario horario = Horario.builder() //
+				.id(1) //
+				.hora("08:00 - 09:00") //
+				.build();
 
 		Mockito.when(horarioRepository.findById(1)).thenReturn(Optional.of(horario));
 	}

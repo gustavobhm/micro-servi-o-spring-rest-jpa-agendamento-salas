@@ -3,6 +3,7 @@ package br.org.cremesp.agenda.sala.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.org.cremesp.agenda.sala.dto.SalaDTO;
 import br.org.cremesp.agenda.sala.entity.Sala;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.service.SalaService;
@@ -25,6 +27,13 @@ public class SalaController {
 
 	@Autowired
 	private SalaService salaService;
+
+	@GetMapping("/pageable")
+	public Page<Sala> getAllPageable( //
+			@RequestParam(defaultValue = "0", name = "pagina") int pagina, //
+			@RequestParam(defaultValue = "5", name = "tamanho") int tamanho) {
+		return salaService.getAllPageable(pagina, tamanho);
+	}
 
 	@GetMapping
 	public List<Sala> getAll() {
@@ -44,13 +53,13 @@ public class SalaController {
 	}
 
 	@PostMapping
-	public Sala add(@RequestBody Sala sala) throws BadRequestException {
-		return salaService.add(sala);
+	public Sala add(@RequestBody SalaDTO salaDTO) throws BadRequestException {
+		return salaService.add(salaDTO.convertToEntity());
 	}
 
 	@PutMapping
-	public Sala edit(@RequestBody Sala sala) throws BadRequestException {
-		return salaService.edit(sala);
+	public Sala edit(@RequestBody SalaDTO salaDTO) throws BadRequestException {
+		return salaService.edit(salaDTO.convertToEntity());
 	}
 
 	@DeleteMapping("/{id}")

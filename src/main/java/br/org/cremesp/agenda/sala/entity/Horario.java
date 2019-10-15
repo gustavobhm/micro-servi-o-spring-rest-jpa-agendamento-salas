@@ -19,10 +19,14 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 @Entity
 @Table( //
@@ -33,12 +37,6 @@ import lombok.NoArgsConstructor;
 public class Horario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	public Horario(Integer id, String hora) {
-		super();
-		this.id = id;
-		this.hora = hora;
-	}
 
 	@Id
 	@Column(name = "ID")
@@ -51,6 +49,6 @@ public class Horario implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "horario")
 	@JsonIgnore
-	private List<Reserva> reservas = new ArrayList<>();
+	private final List<Reserva> reservas = new ArrayList<>();
 
 }

@@ -20,10 +20,14 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 @Entity
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -35,15 +39,6 @@ import lombok.NoArgsConstructor;
 public class Sala implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	public Sala(Integer id, String nome, String andar, Integer qtdPessoas, Boolean impressora) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.andar = andar;
-		this.qtdPessoas = qtdPessoas;
-		this.impressora = impressora;
-	}
 
 	@Id
 	@Column(name = "ID")
@@ -68,6 +63,6 @@ public class Sala implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sala")
 	@JsonIgnore
-	private List<Reserva> reservas = new ArrayList<>();
+	private final List<Reserva> reservas = new ArrayList<>();
 
 }

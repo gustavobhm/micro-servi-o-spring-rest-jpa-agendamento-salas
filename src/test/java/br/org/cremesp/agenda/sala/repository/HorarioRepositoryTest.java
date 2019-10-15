@@ -25,7 +25,11 @@ public class HorarioRepositoryTest {
 	public void givenHorario_whenFindByHora_thenReturnHorario() {
 		
 		// given
-		Horario horario = new Horario(null, "08:00 - 09:00");
+		Horario horario = Horario.builder() //
+				.id(null) //
+				.hora("08:00 - 09:00") //
+				.build();
+		
 		entityManager.persist(horario);
 		entityManager.flush();
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.org.cremesp.agenda.sala.dto.HorarioDTO;
 import br.org.cremesp.agenda.sala.entity.Horario;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.service.HorarioService;
@@ -36,13 +37,13 @@ public class HorarioController {
 	}
 
 	@PostMapping
-	public Horario add(@RequestBody Horario horario) throws BadRequestException {
-		return horarioService.add(horario);
+	public Horario add(@RequestBody HorarioDTO horarioDTO) throws BadRequestException {
+		return horarioService.add(horarioDTO.convertToEntity());
 	}
 
 	@PutMapping
-	public Horario edit(@RequestBody Horario horario) throws BadRequestException {
-		return horarioService.edit(horario);
+	public Horario edit(@RequestBody HorarioDTO horarioDTO) throws BadRequestException {
+		return horarioService.edit(horarioDTO.convertToEntity());
 	}
 
 	@DeleteMapping("/{id}")

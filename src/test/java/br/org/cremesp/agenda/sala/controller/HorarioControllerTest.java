@@ -35,7 +35,10 @@ public class HorarioControllerTest {
 	@Test
 	public void givenHorarios_whenGetHorarios_thenReturnJsonArray() throws Exception {
 
-		Horario horario = new Horario(null, "08:00 - 09:00");
+		Horario horario = Horario.builder() //
+				.id(null) //
+				.hora("08:00 - 09:00") //
+				.build();
 
 		List<Horario> allHorarios = Arrays.asList(horario);
 

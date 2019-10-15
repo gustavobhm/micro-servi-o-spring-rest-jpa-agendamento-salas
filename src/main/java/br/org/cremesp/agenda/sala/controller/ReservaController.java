@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.org.cremesp.agenda.sala.dto.ReservaDTO;
 import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.projection.ReservaByReuniaoView;
@@ -52,13 +53,13 @@ public class ReservaController {
 	}
 
 	@PostMapping
-	public Reserva add(@RequestBody Reserva reserva) throws BadRequestException {
-		return reservaService.add(reserva);
+	public Reserva add(@RequestBody ReservaDTO reservaDTO) throws BadRequestException {
+		return reservaService.add(reservaDTO.convertToEntity());
 	}
 
 	@PutMapping
-	public Reserva edit(@RequestBody Reserva reserva) throws BadRequestException {
-		return reservaService.edit(reserva);
+	public Reserva edit(@RequestBody ReservaDTO reservaDTO) throws BadRequestException {
+		return reservaService.edit(reservaDTO.convertToEntity());
 	}
 
 	@DeleteMapping("/{id}")
