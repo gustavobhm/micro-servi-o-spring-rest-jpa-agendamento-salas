@@ -64,7 +64,7 @@ public class ReuniaoControllerIntegrationTest {
 				.qtdNotebooks(10) //
 				.build();
 
-		repository.saveAndFlush(reuniao1);
+		repository.save(reuniao1);
 
 		Reuniao reuniao2 = Reuniao.builder() //
 				.id(null) //
@@ -81,7 +81,7 @@ public class ReuniaoControllerIntegrationTest {
 				.qtdNotebooks(20) //
 				.build();
 
-		repository.saveAndFlush(reuniao2);
+		repository.save(reuniao2);
 
 	}
 

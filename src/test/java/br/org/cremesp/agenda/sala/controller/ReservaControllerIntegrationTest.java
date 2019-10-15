@@ -71,10 +71,10 @@ public class ReservaControllerIntegrationTest {
 	public void init() throws ParseException {
 
 		reserva1 = newReserva("Reunião 1", "2019-09-12", "Sala 1", "08:00 - 09:00");
-		reservaRepository.saveAndFlush(reserva1);
+		reservaRepository.save(reserva1);
 
 		reserva2 = newReserva("Reunião 2", "2019-09-12", "Sala 2", "09:00 - 10:00");
-		reservaRepository.saveAndFlush(reserva2);
+		reservaRepository.save(reserva2);
 
 	}
 
@@ -266,7 +266,7 @@ public class ReservaControllerIntegrationTest {
 				.qtdNotebooks(10) //
 				.build();
 
-		reuniao = reuniaoRepository.saveAndFlush(reuniao);
+		reuniao = reuniaoRepository.save(reuniao);
 
 		Sala sala = Sala.builder() //
 				.id(null) //
@@ -284,7 +284,7 @@ public class ReservaControllerIntegrationTest {
 				.hora(hora) //
 				.build();
 
-		horario = horarioRepository.saveAndFlush(horario);
+		horario = horarioRepository.save(horario);
 
 		return Reserva.builder() //
 				.id(null) //

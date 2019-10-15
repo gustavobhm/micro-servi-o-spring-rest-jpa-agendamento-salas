@@ -54,14 +54,14 @@ public class HorarioControllerIntegrationTest {
 				.hora("08:00 - 09:00") //
 				.build();
 
-		repository.saveAndFlush(horario1);
+		repository.save(horario1);
 
 		Horario horario2 = Horario.builder() //
 				.id(null) //
 				.hora("09:00 - 10:00") //
 				.build();
 
-		repository.saveAndFlush(horario2);
+		repository.save(horario2);
 
 	}
 
