@@ -88,12 +88,12 @@ public class ReuniaoControllerIntegrationTest {
 	@Test
 	public void getReuniao_ValidTest() throws Exception {
 
-		mvc.perform(get("/reunioes") //
+		mvc.perform(get("/reunioes?pagina=1&tamanho=1") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk()) //
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
-				.andExpect(jsonPath("$", hasSize(2))) //
-				.andExpect(jsonPath("$[1].tema", is("Reunião 2")));
+				.andExpect(jsonPath("$.content", hasSize(1))) //
+				.andExpect(jsonPath("$.content[0].tema", is("Reunião 2")));
 	}
 
 	@Test
@@ -122,8 +122,8 @@ public class ReuniaoControllerIntegrationTest {
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk()) //
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
-				.andExpect(jsonPath("$", hasSize(1))) //
-				.andExpect(jsonPath("$[0].tema", is("Reunião 2")));
+				.andExpect(jsonPath("$.content", hasSize(1))) //
+				.andExpect(jsonPath("$.content[0].tema", is("Reunião 2")));
 	}
 
 	@Test

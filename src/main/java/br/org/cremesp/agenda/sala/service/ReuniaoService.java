@@ -1,9 +1,9 @@
 package br.org.cremesp.agenda.sala.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
@@ -17,8 +17,8 @@ public class ReuniaoService {
 	@Autowired
 	private ReuniaoRepository reuniaoRepository;
 
-	public List<Reuniao> getAll() {
-		return reuniaoRepository.findAllByOrderByIdAsc();
+	public Page<Reuniao> getAll(Integer pagina, Integer tamanho) {
+		return reuniaoRepository.findAllByOrderByIdAsc(PageRequest.of(pagina, tamanho));
 	}
 
 	public Reuniao get(int id) throws BadRequestException {
@@ -27,8 +27,8 @@ public class ReuniaoService {
 
 	}
 
-	public List<Reuniao> getReunioesBy(Integer idSolicitante) {
-		return reuniaoRepository.findByIdSolicitanteOrderByTemaAsc(idSolicitante);
+	public Page<Reuniao> getReunioesBy(Integer idSolicitante, Integer pagina, Integer tamanho) {
+		return reuniaoRepository.findByIdSolicitanteOrderByTemaAsc(idSolicitante, PageRequest.of(pagina, tamanho));
 	}
 
 	public Reuniao add(Reuniao reuniao) {

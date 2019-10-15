@@ -1,8 +1,7 @@
 package br.org.cremesp.agenda.sala.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +27,10 @@ public class ReuniaoController {
 	private ReuniaoService reuniaoService;
 
 	@GetMapping
-	public List<Reuniao> getAll() {
-		return reuniaoService.getAll();
+	public Page<Reuniao> getAll(//
+			@RequestParam(defaultValue = "0", name = "pagina") int pagina, //
+			@RequestParam(defaultValue = "5", name = "tamanho") int tamanho) {
+		return reuniaoService.getAll(pagina, tamanho);
 	}
 
 	@GetMapping("/{id}")
@@ -38,8 +39,11 @@ public class ReuniaoController {
 	}
 
 	@GetMapping("/filtrar")
-	public List<Reuniao> getReservasBy(@RequestParam Integer idSolicitante) {
-		return reuniaoService.getReunioesBy(idSolicitante);
+	public Page<Reuniao> getReservasBy( //
+			@RequestParam Integer idSolicitante, //
+			@RequestParam(defaultValue = "0", name = "pagina") int pagina, //
+			@RequestParam(defaultValue = "5", name = "tamanho") int tamanho) {
+		return reuniaoService.getReunioesBy(idSolicitante, pagina, tamanho);
 	}
 
 	@PostMapping

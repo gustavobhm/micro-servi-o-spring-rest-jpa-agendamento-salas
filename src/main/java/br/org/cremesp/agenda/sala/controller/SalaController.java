@@ -3,7 +3,6 @@ package br.org.cremesp.agenda.sala.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +26,6 @@ public class SalaController {
 
 	@Autowired
 	private SalaService salaService;
-
-	@GetMapping("/pageable")
-	public Page<Sala> getAllPageable( //
-			@RequestParam(defaultValue = "0", name = "pagina") int pagina, //
-			@RequestParam(defaultValue = "5", name = "tamanho") int tamanho) {
-		return salaService.getAllPageable(pagina, tamanho);
-	}
 
 	@GetMapping
 	public List<Sala> getAll() {
