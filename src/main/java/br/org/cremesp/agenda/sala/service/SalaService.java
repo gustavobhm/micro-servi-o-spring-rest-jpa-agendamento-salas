@@ -49,6 +49,7 @@ public class SalaService {
 		s.setAndar(sala.getAndar());
 		s.setQtdPessoas(sala.getQtdPessoas());
 		s.setImpressora(sala.getImpressora());
+		s.setComputador(sala.getComputador());
 		return salaRepository.save(s);
 	}
 
