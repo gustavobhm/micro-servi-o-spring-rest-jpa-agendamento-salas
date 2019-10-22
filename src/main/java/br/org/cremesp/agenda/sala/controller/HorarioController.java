@@ -17,10 +17,12 @@ import br.org.cremesp.agenda.sala.dto.HorarioDTO;
 import br.org.cremesp.agenda.sala.entity.Horario;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.service.HorarioService;
+import io.swagger.annotations.Api;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/horarios")
+@Api(tags = { "API Horario" })
 public class HorarioController {
 
 	@Autowired

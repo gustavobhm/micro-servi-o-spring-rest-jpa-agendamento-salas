@@ -17,10 +17,12 @@ import br.org.cremesp.agenda.sala.dto.ReuniaoDTO;
 import br.org.cremesp.agenda.sala.entity.Reuniao;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.service.ReuniaoService;
+import io.swagger.annotations.Api;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/reunioes")
+@Api(tags = { "API Reuniao" })
 public class ReuniaoController {
 
 	@Autowired

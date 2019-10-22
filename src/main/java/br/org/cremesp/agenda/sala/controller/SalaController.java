@@ -18,16 +18,22 @@ import br.org.cremesp.agenda.sala.dto.SalaDTO;
 import br.org.cremesp.agenda.sala.entity.Sala;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.service.SalaService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/salas")
+@Api(tags = { "API Sala" })
 public class SalaController {
 
 	@Autowired
 	private SalaService salaService;
 
 	@GetMapping
+	@ApiOperation( //
+			value = "Recurso que retorna todos as salas", //
+			notes = "getAll")
 	public List<Sala> getAll() {
 		return salaService.getAll();
 	}

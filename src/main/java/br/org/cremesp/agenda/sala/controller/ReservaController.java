@@ -21,10 +21,12 @@ import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
 import br.org.cremesp.agenda.sala.projection.ReservaByReuniaoView;
 import br.org.cremesp.agenda.sala.service.ReservaService;
+import io.swagger.annotations.Api;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/reservas")
+@Api(tags = { "API Reserva" })
 public class ReservaController {
 
 	@Autowired
