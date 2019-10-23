@@ -10,6 +10,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +32,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.google.gson.Gson;
 
 import br.org.cremesp.agenda.sala.AgendamentoSalasApplication;
+import br.org.cremesp.agenda.sala.constantes.PublicoEnum;
 import br.org.cremesp.agenda.sala.dto.SalaDTO;
+import br.org.cremesp.agenda.sala.entity.Horario;
+import br.org.cremesp.agenda.sala.entity.Reserva;
+import br.org.cremesp.agenda.sala.entity.Reuniao;
 import br.org.cremesp.agenda.sala.entity.Sala;
+import br.org.cremesp.agenda.sala.repository.HorarioRepository;
+import br.org.cremesp.agenda.sala.repository.ReservaRepository;
+import br.org.cremesp.agenda.sala.repository.ReuniaoRepository;
 import br.org.cremesp.agenda.sala.repository.SalaRepository;
 
 @RunWith(SpringRunner.class)
@@ -42,7 +54,16 @@ public class SalaControllerIntegrationTest {
 	private MockMvc mvc;
 
 	@Autowired
-	private SalaRepository repository;
+	private SalaRepository salaRepository;
+
+	@Autowired
+	private ReservaRepository reservaRepository;
+
+	@Autowired
+	private HorarioRepository horarioRepository;
+
+	@Autowired
+	private ReuniaoRepository reuniaoRepository;
 
 	private Gson gson = new Gson();
 
@@ -58,7 +79,7 @@ public class SalaControllerIntegrationTest {
 				.computador(true) //
 				.build();
 
-		repository.save(sala1);
+		salaRepository.save(sala1);
 
 		Sala sala2 = Sala.builder() //
 				.id(null) //
@@ -69,7 +90,7 @@ public class SalaControllerIntegrationTest {
 				.computador(false) //
 				.build();
 
-		repository.save(sala2);
+		salaRepository.save(sala2);
 
 	}
 
@@ -207,6 +228,62 @@ public class SalaControllerIntegrationTest {
 
 	@Test
 	public void deleteSala_InvalidTest() throws Exception {
+
+		mvc.perform(delete("/salas/3") //
+				.contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void deleteSalaWithReserva_InvalidTest() throws Exception {
+
+		DateFormat formato = new SimpleDateFormat("yy-MM-dd", Locale.ENGLISH);
+		Date data = formato.parse("2019-09-12");
+
+		Reuniao reuniao = Reuniao.builder() //
+				.id(null) //
+				.idSolicitante(2) //
+				.responsavel("Responsável 1") //
+				.tema("Reunião 1") //
+				.qtdPessoas(10) //
+				.publico(PublicoEnum.INTERNO.getTexto()) //
+				.projetor(true) //
+				.impressora(true) //
+				.extraAgua(true) //
+				.extraCafe(true) //
+				.extraBiscoito(true) //
+				.qtdNotebooks(10) //
+				.build();
+
+		reuniao = reuniaoRepository.save(reuniao);
+
+		Sala sala = Sala.builder() //
+				.id(null) //
+				.nome("Sala 3") //
+				.andar("3º") //
+				.qtdPessoas(30) //
+				.impressora(true) //
+				.computador(true) //
+				.build();
+
+		sala = salaRepository.save(sala);
+
+		Horario horario = Horario.builder() //
+				.id(null) //
+				.hora("11:00 - 12:00") //
+				.build();
+
+		horario = horarioRepository.save(horario);
+
+		Reserva reserva = Reserva.builder() //
+				.id(null) //
+				.reuniao(reuniao) //
+				.data(data) //
+				.sala(sala) //
+				.horario(horario) //
+				.build();
+		
+		reserva = reservaRepository.save(reserva);
 
 		mvc.perform(delete("/salas/3") //
 				.contentType(MediaType.APPLICATION_JSON)) //
