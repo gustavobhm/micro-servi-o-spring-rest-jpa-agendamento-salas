@@ -24,7 +24,8 @@ public enum AgendamentoSalasEnum {
 	MSG_SALA_FIND_ERRO("Sala não encontrada!"),
 	MSG_SALA_SAVE_ERRO("A sala não foi salva!"),
 	MSG_SALA_UPDATE_ERRO("A sala não foi atualizada!"),
-	MSG_SALA_DELETE_ERRO("A sala não foi excluída!")	
+	MSG_SALA_DELETE_ERRO("A sala não foi excluída!"),
+	MSG_SALA_DELETE_RESERVA_ERRO("A sala não foi excluída, porque existem reservas feitas para essa sala!")
 	
 	;
 	

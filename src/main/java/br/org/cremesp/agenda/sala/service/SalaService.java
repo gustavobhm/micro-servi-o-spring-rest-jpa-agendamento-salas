@@ -8,10 +8,14 @@ import org.springframework.stereotype.Service;
 import br.org.cremesp.agenda.sala.constantes.AgendamentoSalasEnum;
 import br.org.cremesp.agenda.sala.entity.Sala;
 import br.org.cremesp.agenda.sala.exception.BadRequestException;
+import br.org.cremesp.agenda.sala.repository.ReservaRepository;
 import br.org.cremesp.agenda.sala.repository.SalaRepository;
 
 @Service
 public class SalaService {
+
+	@Autowired
+	private ReservaRepository reservaRepository;
 
 	@Autowired
 	private SalaRepository salaRepository;
@@ -54,6 +58,8 @@ public class SalaService {
 	}
 
 	public void delete(int id) throws BadRequestException {
+		if (!reservaRepository.findBySalaIdOrderByIdAsc(id).isEmpty())
+			throw new BadRequestException(AgendamentoSalasEnum.MSG_SALA_DELETE_RESERVA_ERRO.getTexto());
 		try {
 			salaRepository.deleteById(id);
 		} catch (Exception e) {
