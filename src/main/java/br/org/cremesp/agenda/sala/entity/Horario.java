@@ -15,10 +15,13 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.modelmapper.ModelMapper;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import br.org.cremesp.agenda.sala.dto.HorarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,5 +53,10 @@ public class Horario implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "horario")
 	@JsonIgnore
 	private final List<Reserva> reservas = new ArrayList<>();
+
+	public HorarioDTO convertToDTO() {
+		ModelMapper modelMapper = new ModelMapper();
+		return modelMapper.map(this, HorarioDTO.class);
+	}
 
 }

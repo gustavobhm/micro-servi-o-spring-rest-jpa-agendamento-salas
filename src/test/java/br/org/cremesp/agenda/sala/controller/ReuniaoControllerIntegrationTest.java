@@ -26,17 +26,19 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.google.gson.Gson;
 
-import br.org.cremesp.agenda.sala.AgendamentoSalasApplication;
-import br.org.cremesp.agenda.sala.constantes.PublicoEnum;
+import br.com.six2six.fixturefactory.Fixture;
+import br.org.cremesp.agenda.sala.Application;
 import br.org.cremesp.agenda.sala.entity.Reuniao;
+import br.org.cremesp.agenda.sala.fixture.BaseFixture;
+import br.org.cremesp.agenda.sala.fixture.ReuniaoFixture;
 import br.org.cremesp.agenda.sala.repository.ReuniaoRepository;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = AgendamentoSalasApplication.class)
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = Application.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class ReuniaoControllerIntegrationTest {
+public class ReuniaoControllerIntegrationTest extends BaseFixture {
 
 	@Autowired
 	private MockMvc mvc;
@@ -46,40 +48,22 @@ public class ReuniaoControllerIntegrationTest {
 
 	private Gson gson = new Gson();
 
+	private Reuniao reuniao1;
+
+	private Reuniao reuniao2;
+
 	@Before
 	public void init() {
 
-		Reuniao reuniao1 = Reuniao.builder() //
-				.id(null) //
-				.idSolicitante(2) //
-				.responsavel("Responsável 1") //
-				.tema("Reunião 1") //
-				.qtdPessoas(10) //
-				.publico(PublicoEnum.INTERNO.getTexto()) //
-				.projetor(true) //
-				.impressora(true) //
-				.extraAgua(true) //
-				.extraCafe(true) //
-				.extraBiscoito(true) //
-				.qtdNotebooks(10) //
-				.build();
+		reuniao1 = Fixture //
+				.from(Reuniao.class) //
+				.gimme(ReuniaoFixture.VALID_REUNIAO_1);
 
 		repository.save(reuniao1);
 
-		Reuniao reuniao2 = Reuniao.builder() //
-				.id(null) //
-				.idSolicitante(4) //
-				.responsavel("Responsável 2") //
-				.tema("Reunião 2") //
-				.qtdPessoas(20) //
-				.publico(PublicoEnum.EXTERNO.getTexto()) //
-				.projetor(true) //
-				.impressora(true) //
-				.extraAgua(false) //
-				.extraCafe(true) //
-				.extraBiscoito(false) //
-				.qtdNotebooks(20) //
-				.build();
+		reuniao2 = Fixture //
+				.from(Reuniao.class) //
+				.gimme(ReuniaoFixture.VALID_REUNIAO_2);
 
 		repository.save(reuniao2);
 
@@ -129,20 +113,9 @@ public class ReuniaoControllerIntegrationTest {
 	@Test
 	public void addReuniao_ValidTest() throws Exception {
 
-		Reuniao reuniao = Reuniao.builder() //
-				.id(null) //
-				.idSolicitante(2) //
-				.responsavel("Responsável 1") //
-				.tema("Reunião 3") //
-				.qtdPessoas(10) //
-				.publico(PublicoEnum.INTERNO.getTexto()) //
-				.projetor(true) //
-				.impressora(true) //
-				.extraAgua(true) //
-				.extraCafe(true) //
-				.extraBiscoito(true) //
-				.qtdNotebooks(10) //
-				.build();
+		Reuniao reuniao = Fixture //
+				.from(Reuniao.class) //
+				.gimme(ReuniaoFixture.VALID);
 
 		mvc.perform(post("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
@@ -153,48 +126,22 @@ public class ReuniaoControllerIntegrationTest {
 	@Test
 	public void updateReuniao_ValidTest() throws Exception {
 
-		Reuniao reuniao = Reuniao.builder() //
-				.id(2) //
-				.idSolicitante(2) //
-				.responsavel("Responsável 1") //
-				.tema("Reunião 2 update") //
-				.qtdPessoas(10) //
-				.publico(PublicoEnum.INTERNO.getTexto()) //
-				.projetor(true) //
-				.impressora(true) //
-				.extraAgua(true) //
-				.extraCafe(true) //
-				.extraBiscoito(true) //
-				.qtdNotebooks(10) //
-				.build();
+		reuniao1.setTema("Nova Reunião 1");
 
 		mvc.perform(put("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(reuniao))) //
+				.content(gson.toJson(reuniao1.convertToDTO()))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void updateReuniao_InvalidTest() throws Exception {
 
-		Reuniao reuniao = Reuniao.builder() //
-				.id(3) //
-				.idSolicitante(2) //
-				.responsavel("Responsável 1") //
-				.tema("Reunião 3 update") //
-				.qtdPessoas(10) //
-				.publico(PublicoEnum.INTERNO.getTexto()) //
-				.projetor(true) //
-				.impressora(true) //
-				.extraAgua(true) //
-				.extraCafe(true) //
-				.extraBiscoito(true) //
-				.qtdNotebooks(10) //
-				.build();
+		reuniao1.setId(3);
 
 		mvc.perform(put("/reunioes") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(reuniao))) //
+				.content(gson.toJson(reuniao1.convertToDTO()))) //
 				.andExpect(status().isBadRequest());
 	}
 

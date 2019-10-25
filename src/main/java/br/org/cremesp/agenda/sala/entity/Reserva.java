@@ -14,8 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.modelmapper.ModelMapper;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
+import br.org.cremesp.agenda.sala.dto.ReservaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -58,5 +61,10 @@ public class Reserva implements Serializable {
 	@JoinColumn(name = "ID_HORARIO", referencedColumnName = "ID", insertable = true, updatable = true)
 	@NotNull
 	private Horario horario;
+
+	public ReservaDTO convertToDTO() {
+		ModelMapper modelMapper = new ModelMapper();
+		return modelMapper.map(this, ReservaDTO.class);
+	}
 
 }

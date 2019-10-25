@@ -10,11 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,23 +26,31 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import br.org.cremesp.agenda.sala.AgendamentoSalasApplication;
-import br.org.cremesp.agenda.sala.constantes.PublicoEnum;
+import com.google.gson.Gson;
+
+import br.com.six2six.fixturefactory.Fixture;
+import br.org.cremesp.agenda.sala.Application;
+import br.org.cremesp.agenda.sala.common.DataUtils;
 import br.org.cremesp.agenda.sala.entity.Horario;
 import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.entity.Reuniao;
 import br.org.cremesp.agenda.sala.entity.Sala;
+import br.org.cremesp.agenda.sala.fixture.BaseFixture;
+import br.org.cremesp.agenda.sala.fixture.HorarioFixture;
+import br.org.cremesp.agenda.sala.fixture.ReservaFixture;
+import br.org.cremesp.agenda.sala.fixture.ReuniaoFixture;
+import br.org.cremesp.agenda.sala.fixture.SalaFixture;
 import br.org.cremesp.agenda.sala.repository.HorarioRepository;
 import br.org.cremesp.agenda.sala.repository.ReservaRepository;
 import br.org.cremesp.agenda.sala.repository.ReuniaoRepository;
 import br.org.cremesp.agenda.sala.repository.SalaRepository;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = AgendamentoSalasApplication.class)
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = Application.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class ReservaControllerIntegrationTest {
+public class ReservaControllerIntegrationTest extends BaseFixture {
 
 	@Autowired
 	private MockMvc mvc;
@@ -63,19 +67,32 @@ public class ReservaControllerIntegrationTest {
 	@Autowired
 	private ReservaRepository reservaRepository;
 
-	private Reserva reserva1;
+	@Autowired
+	private Gson gson;
 
+	private Reserva reserva1;
+	
 	private Reserva reserva2;
 
 	@Before
 	public void init() throws ParseException {
 
-		reserva1 = newReserva("Reunião 1", "2019-09-12", "Sala 1", "08:00 - 09:00");
+		reserva1 = newReserva( //
+				ReuniaoFixture.VALID_REUNIAO_1, //
+				SalaFixture.VALID_SALA_1, //
+				HorarioFixture.VALID_HORARIO_1, //
+				ReservaFixture.VALID_RESERVA_1 //
+		);
 		reservaRepository.save(reserva1);
-
-		reserva2 = newReserva("Reunião 2", "2019-09-12", "Sala 2", "09:00 - 10:00");
+		
+		reserva2 = newReserva( //
+				ReuniaoFixture.VALID_REUNIAO_2, //
+				SalaFixture.VALID_SALA_2, //
+				HorarioFixture.VALID_HORARIO_2, //
+				ReservaFixture.VALID_RESERVA_2 //
+		);
 		reservaRepository.save(reserva2);
-
+		
 	}
 
 	@Test
@@ -133,82 +150,57 @@ public class ReservaControllerIntegrationTest {
 	@Test
 	public void addReserva_ValidTest() throws Exception {
 
-		String reservaJson = "{ " //
-				+ " \"reuniao\":{ \"id\":1 }, " //
-				+ " \"data\"   :\"2019-09-06\", " //
-				+ " \"sala\"   :{ \"id\":1 }, " //
-				+ " \"horario\":{ \"id\":1 }" //
-				+ "}";
+		Reserva reserva = Fixture //
+				.from(Reserva.class) //
+				.gimme(ReservaFixture.VALID);
 
 		mvc.perform(post("/reservas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(reservaJson)) //
+				.content(gson.toJson(reserva.convertToDTO()))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void addReserva_InvalidTest() throws Exception {
 
-		String reservaJson = "{ " //
-				+ " \"reuniao\":{ \"id\":1 }, " //
-				+ " \"data\"   :\"2019-09-12\", " //
-				+ " \"sala\"   :{ \"id\":1 }, " //
-				+ " \"horario\":{ \"id\":1 }" //
-				+ "}";
+		reserva1.setId(null);
 
 		mvc.perform(post("/reservas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(reservaJson)) //
+				.content(gson.toJson(reserva1.convertToDTO()))) //
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	public void updateReserva_ValidTest() throws Exception {
 
-		String reservaJson = "{ \"id\":1 ," //
-				+ " \"reuniao\":{ \"id\":1 }, " //
-				+ " \"data\"   :\"2019-09-06\", " //
-				+ " \"sala\"   :{ \"id\":1 }, " //
-				+ " \"horario\":{ \"id\":1 }" //
-				+ "}";
+		reserva1.setData(DataUtils.newDateWithFormat("2020-12-12"));
 
 		mvc.perform(put("/reservas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(reservaJson)) //
+				.content(gson.toJson(reserva1.convertToDTO()))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void updateReserva_InvalidTest() throws Exception {
 
-		String reservaJson = "{ " //
-				+ "	\"id\":3 ," //
-				+ " \"reuniao\":{ \"id\":1 }, " //
-				+ " \"data\"   :\"2019-09-06\", " //
-				+ " \"sala\"   :{ \"id\":1 }, " //
-				+ " \"horario\":{ \"id\":1 }" //
-				+ "}";
+		reserva1.setId(3);
 
 		mvc.perform(put("/reservas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(reservaJson)) //
+				.content(gson.toJson(reserva1.convertToDTO()))) //
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	public void updateReserva_DataIntegrityViolationException_InvalidTest() throws Exception {
 
-		String reservaJson = "{ " //
-				+ "	\"id\":2 ," //
-				+ " \"reuniao\":{ \"id\":1 }, " //
-				+ " \"data\"   :\"2019-09-12\", " //
-				+ " \"sala\"   :{ \"id\":1 }, " //
-				+ " \"horario\":{ \"id\":1 }" //
-				+ "}";
+		reserva1.setId(2);
 
 		mvc.perform(put("/reservas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(reservaJson)) //
+				.content(gson.toJson(reserva1.convertToDTO()))) //
 				.andExpect(status().isBadRequest());
 
 	}
@@ -245,55 +237,18 @@ public class ReservaControllerIntegrationTest {
 				.andExpect(status().isBadRequest());
 	}
 
-	private Reserva newReserva(String temaReuniao, String stringData, String nomeSala, String hora)
-			throws ParseException {
+	private Reserva newReserva( //
+			String reuniaoType, //
+			String salaType, //
+			String horarioType, //
+			String reservaType //
+	) {
 
-		DateFormat formato = new SimpleDateFormat("yy-MM-dd", Locale.ENGLISH);
-		Date data = formato.parse(stringData);
-
-		Reuniao reuniao = Reuniao.builder() //
-				.id(null) //
-				.idSolicitante(2) //
-				.responsavel("Responsável 1") //
-				.tema(temaReuniao) //
-				.qtdPessoas(10) //
-				.publico(PublicoEnum.INTERNO.getTexto()) //
-				.projetor(true) //
-				.impressora(true) //
-				.extraAgua(true) //
-				.extraCafe(true) //
-				.extraBiscoito(true) //
-				.qtdNotebooks(10) //
-				.build();
-
-		reuniao = reuniaoRepository.save(reuniao);
-
-		Sala sala = Sala.builder() //
-				.id(null) //
-				.nome(nomeSala) //
-				.andar("1º") //
-				.qtdPessoas(10) //
-				.impressora(true) //
-				.computador(true) //
-				.build();
-
-		sala = salaRepository.save(sala);
-
-		Horario horario = Horario.builder() //
-				.id(null) //
-				.hora(hora) //
-				.build();
-
-		horario = horarioRepository.save(horario);
-
-		return Reserva.builder() //
-				.id(null) //
-				.reuniao(reuniao) //
-				.data(data) //
-				.sala(sala) //
-				.horario(horario) //
-				.build();
-
+		reuniaoRepository.save(Fixture.from(Reuniao.class).gimme(reuniaoType));
+		salaRepository.save(Fixture.from(Sala.class).gimme(salaType));
+		horarioRepository.save(Fixture.from(Horario.class).gimme(horarioType));
+		
+		return Fixture.from(Reserva.class).gimme(reservaType);
 	}
 
 }

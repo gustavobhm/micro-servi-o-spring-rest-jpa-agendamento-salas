@@ -15,11 +15,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.modelmapper.ModelMapper;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import br.org.cremesp.agenda.sala.dto.SalaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,13 +63,18 @@ public class Sala implements Serializable {
 	@Column(name = "IMPRESSORA", nullable = false)
 	@NotNull
 	private Boolean impressora;
-	
+
 	@Column(name = "COMPUTADOR", nullable = false)
 	@NotNull
-	private Boolean computador;	
+	private Boolean computador;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sala")
 	@JsonIgnore
 	private final List<Reserva> reservas = new ArrayList<>();
+
+	public SalaDTO convertToDTO() {
+		ModelMapper modelMapper = new ModelMapper();
+		return modelMapper.map(this, SalaDTO.class);
+	}
 
 }

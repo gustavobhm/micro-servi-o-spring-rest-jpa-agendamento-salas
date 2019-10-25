@@ -26,47 +26,52 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.google.gson.Gson;
 
-import br.org.cremesp.agenda.sala.AgendamentoSalasApplication;
-import br.org.cremesp.agenda.sala.dto.HorarioDTO;
+import br.com.six2six.fixturefactory.Fixture;
+import br.org.cremesp.agenda.sala.Application;
 import br.org.cremesp.agenda.sala.entity.Horario;
+import br.org.cremesp.agenda.sala.fixture.BaseFixture;
+import br.org.cremesp.agenda.sala.fixture.HorarioFixture;
 import br.org.cremesp.agenda.sala.repository.HorarioRepository;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = AgendamentoSalasApplication.class)
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = Application.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class HorarioControllerIntegrationTest {
+public class HorarioControllerIntegrationTest extends BaseFixture {
 
 	@Autowired
 	private MockMvc mvc;
 
 	@Autowired
-	private HorarioRepository repository;
+	private HorarioRepository horarioRepository;
 
 	private Gson gson = new Gson();
+
+	private Horario horario1;
+
+	private Horario horario2;
 
 	@Before
 	public void init() {
 
-		Horario horario1 = Horario.builder() //
-				.id(null) //
-				.hora("08:00 - 09:00") //
-				.build();
+		horario1 = Fixture //
+				.from(Horario.class) //
+				.gimme(HorarioFixture.VALID_HORARIO_1);
 
-		repository.save(horario1);
+		horarioRepository.save(horario1);
 
-		Horario horario2 = Horario.builder() //
-				.id(null) //
-				.hora("09:00 - 10:00") //
-				.build();
+		horario2 = Fixture //
+				.from(Horario.class) //
+				.gimme(HorarioFixture.VALID_HORARIO_2);
 
-		repository.save(horario2);
+		horarioRepository.save(horario2);
 
 	}
 
 	@Test
 	public void getHorarios_ValidTest() throws Exception {
+		
 		mvc.perform(get("/horarios") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk()) //
@@ -76,6 +81,7 @@ public class HorarioControllerIntegrationTest {
 
 	@Test
 	public void getByIdHorario_ValidTest() throws Exception {
+		
 		mvc.perform(get("/horarios/1") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk()) //
@@ -86,6 +92,7 @@ public class HorarioControllerIntegrationTest {
 
 	@Test
 	public void getByIdHorario_InvalidTest() throws Exception {
+		
 		mvc.perform(get("/horarios/3") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isBadRequest());
@@ -94,61 +101,52 @@ public class HorarioControllerIntegrationTest {
 	@Test
 	public void addHorario_ValidTest() throws Exception {
 
-		HorarioDTO horarioDTO = HorarioDTO.builder() //
-				.id(null) //
-				.hora("10:00 - 11:00") //
-				.build();
+		Horario horario = Fixture //
+				.from(Horario.class) //
+				.gimme(HorarioFixture.VALID);
 
 		mvc.perform(post("/horarios") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(horarioDTO))) //
+				.content(gson.toJson(horario.convertToDTO()))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void addHorario_InvalidTest() throws Exception {
 
-		HorarioDTO horarioDTO = HorarioDTO.builder() //
-				.id(null) //
-				.hora("08:00 - 09:00") //
-				.build();
+		horario1.setId(null);
 
 		mvc.perform(post("/horarios") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(horarioDTO))) //
+				.content(gson.toJson(horario1.convertToDTO()))) //
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	public void updateHorario_ValidTest() throws Exception {
 
-		HorarioDTO horarioDTO = HorarioDTO.builder() //
-				.id(2) //
-				.hora("10:00 - 11:00") //
-				.build();
+		horario1.setHora("07:00 - 08:00");
 
 		mvc.perform(put("/horarios") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(horarioDTO))) //
+				.content(gson.toJson(horario1.convertToDTO()))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void updateHorario_InvalidTest() throws Exception {
 
-		HorarioDTO horarioDTO = HorarioDTO.builder() //
-				.id(3) //
-				.hora("09:00 - 10:00") //
-				.build();
+		horario1.setId(3);
 
 		mvc.perform(put("/horarios") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(horarioDTO))) //
+				.content(gson.toJson(horario1.convertToDTO()))) //
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	public void deleteHorario_ValidTest() throws Exception {
+		
 		mvc.perform(delete("/horarios/1") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk());
@@ -156,6 +154,7 @@ public class HorarioControllerIntegrationTest {
 
 	@Test
 	public void deleteHorario_InvalidTest() throws Exception {
+		
 		mvc.perform(delete("/horarios/3") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isBadRequest());

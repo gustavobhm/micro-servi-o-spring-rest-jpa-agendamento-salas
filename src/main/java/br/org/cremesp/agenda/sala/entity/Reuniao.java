@@ -15,11 +15,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.modelmapper.ModelMapper;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import br.org.cremesp.agenda.sala.dto.ReuniaoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -92,5 +95,10 @@ public class Reuniao implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "reuniao")
 	@JsonIgnore
 	private final List<Reserva> reservas = new ArrayList<>();
+
+	public ReuniaoDTO convertToDTO() {
+		ModelMapper modelMapper = new ModelMapper();
+		return modelMapper.map(this, ReuniaoDTO.class);
+	}
 
 }

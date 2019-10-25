@@ -10,11 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,24 +26,28 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.google.gson.Gson;
 
-import br.org.cremesp.agenda.sala.AgendamentoSalasApplication;
-import br.org.cremesp.agenda.sala.constantes.PublicoEnum;
-import br.org.cremesp.agenda.sala.dto.SalaDTO;
+import br.com.six2six.fixturefactory.Fixture;
+import br.org.cremesp.agenda.sala.Application;
 import br.org.cremesp.agenda.sala.entity.Horario;
 import br.org.cremesp.agenda.sala.entity.Reserva;
 import br.org.cremesp.agenda.sala.entity.Reuniao;
 import br.org.cremesp.agenda.sala.entity.Sala;
+import br.org.cremesp.agenda.sala.fixture.BaseFixture;
+import br.org.cremesp.agenda.sala.fixture.HorarioFixture;
+import br.org.cremesp.agenda.sala.fixture.ReservaFixture;
+import br.org.cremesp.agenda.sala.fixture.ReuniaoFixture;
+import br.org.cremesp.agenda.sala.fixture.SalaFixture;
 import br.org.cremesp.agenda.sala.repository.HorarioRepository;
 import br.org.cremesp.agenda.sala.repository.ReservaRepository;
 import br.org.cremesp.agenda.sala.repository.ReuniaoRepository;
 import br.org.cremesp.agenda.sala.repository.SalaRepository;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = AgendamentoSalasApplication.class)
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = Application.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class SalaControllerIntegrationTest {
+public class SalaControllerIntegrationTest extends BaseFixture {
 
 	@Autowired
 	private MockMvc mvc;
@@ -67,28 +66,22 @@ public class SalaControllerIntegrationTest {
 
 	private Gson gson = new Gson();
 
+	private Sala sala1;
+
+	private Sala sala2;
+
 	@Before
 	public void init() {
 
-		Sala sala1 = Sala.builder() //
-				.id(null) //
-				.nome("Sala 1") //
-				.andar("1º") //
-				.qtdPessoas(10) //
-				.impressora(true) //
-				.computador(true) //
-				.build();
+		sala1 = Fixture //
+				.from(Sala.class) //
+				.gimme(SalaFixture.VALID_SALA_1);
 
 		salaRepository.save(sala1);
 
-		Sala sala2 = Sala.builder() //
-				.id(null) //
-				.nome("Sala 2") //
-				.andar("2º") //
-				.qtdPessoas(20) //
-				.impressora(false) //
-				.computador(false) //
-				.build();
+		sala2 = Fixture //
+				.from(Sala.class) //
+				.gimme(SalaFixture.VALID_SALA_2);
 
 		salaRepository.save(sala2);
 
@@ -149,72 +142,46 @@ public class SalaControllerIntegrationTest {
 	@Test
 	public void addSala_ValidTest() throws Exception {
 
-		SalaDTO salaDTO = SalaDTO.builder() //
-				.id(null) //
-				.nome("Sala 3") //
-				.andar("3º") //
-				.qtdPessoas(30) //
-				.impressora(false) //
-				.computador(false) //
-				.build();
+		Sala sala = Fixture //
+				.from(Sala.class) //
+				.gimme(SalaFixture.VALID);
 
 		mvc.perform(post("/salas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(salaDTO))) //
+				.content(gson.toJson(sala.convertToDTO()))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void addSala_InvalidTest() throws Exception {
 
-		SalaDTO salaDTO = SalaDTO.builder() //
-				.id(null) //
-				.nome("Sala 2") //
-				.andar("3º") //
-				.qtdPessoas(30) //
-				.impressora(false) //
-				.computador(false) //
-				.build();
+		sala1.setId(null);
 
 		mvc.perform(post("/salas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(salaDTO))) //
+				.content(gson.toJson(sala1.convertToDTO()))) //
 				.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	public void updateSala_ValidTest() throws Exception {
 
-		SalaDTO salaDTO = SalaDTO.builder() //
-				.id(1) //
-				.nome("Sala 1") //
-				.andar("2º") //
-				.qtdPessoas(20) //
-				.impressora(true) //
-				.computador(false) //
-				.build();
+		sala1.setAndar("1º Andar");
 
 		mvc.perform(put("/salas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(salaDTO))) //
+				.content(gson.toJson(sala1.convertToDTO()))) //
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void updateSala_InvalidTest() throws Exception {
 
-		SalaDTO salaDTO = SalaDTO.builder() //
-				.id(3) //
-				.nome("Sala 1") //
-				.andar("2º") //
-				.qtdPessoas(20) //
-				.impressora(true) //
-				.computador(false) //
-				.build();
+		sala1.setId(3);
 
 		mvc.perform(put("/salas") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(gson.toJson(salaDTO))) //
+				.content(gson.toJson(sala1.convertToDTO()))) //
 				.andExpect(status().isBadRequest());
 	}
 
@@ -237,57 +204,31 @@ public class SalaControllerIntegrationTest {
 	@Test
 	public void deleteSalaWithReserva_InvalidTest() throws Exception {
 
-		DateFormat formato = new SimpleDateFormat("yy-MM-dd", Locale.ENGLISH);
-		Date data = formato.parse("2019-09-12");
+		Reserva reserva = newReserva( //
+				ReuniaoFixture.VALID_REUNIAO_1, //
+				SalaFixture.VALID_SALA_1, //
+				HorarioFixture.VALID_HORARIO_1, //
+				ReservaFixture.VALID_RESERVA_1 //
+		);
+		reservaRepository.save(reserva);
 
-		Reuniao reuniao = Reuniao.builder() //
-				.id(null) //
-				.idSolicitante(2) //
-				.responsavel("Responsável 1") //
-				.tema("Reunião 1") //
-				.qtdPessoas(10) //
-				.publico(PublicoEnum.INTERNO.getTexto()) //
-				.projetor(true) //
-				.impressora(true) //
-				.extraAgua(true) //
-				.extraCafe(true) //
-				.extraBiscoito(true) //
-				.qtdNotebooks(10) //
-				.build();
-
-		reuniao = reuniaoRepository.save(reuniao);
-
-		Sala sala = Sala.builder() //
-				.id(null) //
-				.nome("Sala 3") //
-				.andar("3º") //
-				.qtdPessoas(30) //
-				.impressora(true) //
-				.computador(true) //
-				.build();
-
-		sala = salaRepository.save(sala);
-
-		Horario horario = Horario.builder() //
-				.id(null) //
-				.hora("11:00 - 12:00") //
-				.build();
-
-		horario = horarioRepository.save(horario);
-
-		Reserva reserva = Reserva.builder() //
-				.id(null) //
-				.reuniao(reuniao) //
-				.data(data) //
-				.sala(sala) //
-				.horario(horario) //
-				.build();
-		
-		reserva = reservaRepository.save(reserva);
-
-		mvc.perform(delete("/salas/3") //
+		mvc.perform(delete("/salas/1") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isBadRequest());
+	}
+
+	private Reserva newReserva( //
+			String reuniaoType, //
+			String salaType, //
+			String horarioType, //
+			String reservaType //
+	) {
+
+		reuniaoRepository.save(Fixture.from(Reuniao.class).gimme(reuniaoType));
+		salaRepository.save(Fixture.from(Sala.class).gimme(salaType));
+		horarioRepository.save(Fixture.from(Horario.class).gimme(horarioType));
+
+		return Fixture.from(Reserva.class).gimme(reservaType);
 	}
 
 }
