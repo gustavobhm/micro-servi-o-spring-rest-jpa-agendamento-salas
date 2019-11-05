@@ -21,6 +21,7 @@ public class SalaFixture implements TemplateLoader {
 				add("qtdPessoas", random(Integer.class, range(1, 10)));
 				add("impressora", random(Boolean.class));
 				add("computador", random(Boolean.class));
+				add("ativa", random(Boolean.class));
 			}
 		});
 
@@ -32,6 +33,7 @@ public class SalaFixture implements TemplateLoader {
 				add("qtdPessoas", 10);
 				add("impressora", true);
 				add("computador", true);
+				add("ativa", true);
 			}
 		});
 
@@ -43,6 +45,7 @@ public class SalaFixture implements TemplateLoader {
 				add("qtdPessoas", 20);
 				add("impressora", false);
 				add("computador", false);
+				add("ativa", false);
 			}
 		});
 

@@ -54,6 +54,7 @@ public class SalaService {
 		s.setQtdPessoas(sala.getQtdPessoas());
 		s.setImpressora(sala.getImpressora());
 		s.setComputador(sala.getComputador());
+		s.setAtiva(sala.getAtiva());
 		return salaRepository.save(s);
 	}
 

@@ -37,6 +37,11 @@ public class ReservaService {
 	public List<ReservaByReuniaoView> getReservasByReuniao(Integer idReuniao) {
 		return reservaRepository.findDistinctByReuniaoIdOrderByDataAscSalaIdAsc(idReuniao);
 	}
+	
+	public List<ReservaByReuniaoView> getReservasByReuniaoFromTomorrow(Integer idReuniao) {
+		return reservaRepository.findDistinctByReuniaoIdAndDataAfterOrderByDataAsc(idReuniao, new Date());
+	}
+
 
 	public Reserva add(Reserva reserva) throws BadRequestException {
 		try {
@@ -54,6 +59,7 @@ public class ReservaService {
 		r.setHorario(reserva.getHorario());
 		r.setReuniao(reserva.getReuniao());
 		r.setSala(reserva.getSala());
+		r.setCafe(reserva.getCafe());
 
 		try {
 			return reservaRepository.save(r);

@@ -61,6 +61,10 @@ public class Reserva implements Serializable {
 	@JoinColumn(name = "ID_HORARIO", referencedColumnName = "ID", insertable = true, updatable = true)
 	@NotNull
 	private Horario horario;
+	
+	@Column(name = "CAFE", nullable = false)
+	@NotNull
+	private Boolean cafe;
 
 	public ReservaDTO convertToDTO() {
 		ModelMapper modelMapper = new ModelMapper();

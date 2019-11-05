@@ -46,6 +46,11 @@ public class ReservaController {
 	public List<ReservaByReuniaoView> getReservasByReuniao(@PathVariable int idReuniao) {
 		return reservaService.getReservasByReuniao(idReuniao);
 	}
+	
+	@GetMapping("/reuniao/{idReuniao}/tomorrow")
+	public List<ReservaByReuniaoView> getReservasByReuniaoFromTomorrow(@PathVariable int idReuniao) {
+		return reservaService.getReservasByReuniaoFromTomorrow(idReuniao);
+	}
 
 	@GetMapping("/filtrar")
 	public List<Reserva> getReservasBy( //

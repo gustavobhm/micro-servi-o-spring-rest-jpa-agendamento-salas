@@ -44,7 +44,8 @@ public class Application extends SpringBootServletInitializer {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("API - Agendamento de Salas") //
+		return new ApiInfoBuilder() //
+				.title("API - Agendamento de Salas") //
 				.description("APIs para agendamento de salas do Cremesp") //
 				.version("1.0.0") //
 				.license("") //

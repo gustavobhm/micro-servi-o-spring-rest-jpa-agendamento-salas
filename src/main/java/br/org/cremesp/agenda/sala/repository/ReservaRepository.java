@@ -19,6 +19,8 @@ public interface ReservaRepository extends PagingAndSortingRepository<Reserva, I
 	public List<Reserva> findBySalaIdOrderByIdAsc(Integer idSala);
 
 	public List<Reserva> findByReuniaoIdOrderByIdAsc(Integer idReuniao);
+	
+	public List<ReservaByReuniaoView> findDistinctByReuniaoIdAndDataAfterOrderByDataAsc(Integer idReuniao, Date data);
 
 	public List<ReservaByReuniaoView> findDistinctByReuniaoIdOrderByDataAscSalaIdAsc(Integer idReuniao);
 

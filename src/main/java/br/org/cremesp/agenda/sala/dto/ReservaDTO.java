@@ -28,6 +28,8 @@ public class ReservaDTO {
 	private Sala sala;
 
 	private Horario horario;
+	
+	private Boolean cafe;
 
 	public Reserva convertToEntity() {
 		ModelMapper modelMapper = new ModelMapper();

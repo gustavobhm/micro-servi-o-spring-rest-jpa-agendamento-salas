@@ -26,6 +26,7 @@ public class ReservaFixture implements TemplateLoader {
 				add("data", randomDate("2020-01-01", "2020-12-31", new SimpleDateFormat("yyyy-MM-dd")));
 				add("sala", one(Sala.class, SalaFixture.VALID_SALA_1));
 				add("horario", one(Horario.class, HorarioFixture.VALID_HORARIO_1));
+				add("cafe", random(Boolean.class));
 			}
 		});
 
@@ -37,6 +38,7 @@ public class ReservaFixture implements TemplateLoader {
 				add("data", DataUtils.newDateWithFormat("2019-09-12"));
 				add("sala", one(Sala.class, SalaFixture.VALID_SALA_1));
 				add("horario", one(Horario.class, HorarioFixture.VALID_HORARIO_1));
+				add("cafe", true);
 			}
 		});
 
@@ -47,6 +49,7 @@ public class ReservaFixture implements TemplateLoader {
 				add("data", DataUtils.newDateWithFormat("2019-09-12"));
 				add("sala", one(Sala.class, SalaFixture.VALID_SALA_2));
 				add("horario", one(Horario.class, HorarioFixture.VALID_HORARIO_2));
+				add("cafe", false);
 			}
 		});
 

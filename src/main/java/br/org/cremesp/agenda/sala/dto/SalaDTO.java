@@ -25,6 +25,8 @@ public class SalaDTO {
 	private Boolean impressora;
 
 	private Boolean computador;
+	
+	private Boolean ativa;
 
 	public Sala convertToEntity() {
 		ModelMapper modelMapper = new ModelMapper();
