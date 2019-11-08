@@ -71,7 +71,7 @@ public class ReservaControllerIntegrationTest extends BaseFixture {
 	private Gson gson;
 
 	private Reserva reserva1;
-	
+
 	private Reserva reserva2;
 
 	@Before
@@ -84,7 +84,7 @@ public class ReservaControllerIntegrationTest extends BaseFixture {
 				ReservaFixture.VALID_RESERVA_1 //
 		);
 		reservaRepository.save(reserva1);
-		
+
 		reserva2 = newReserva( //
 				ReuniaoFixture.VALID_REUNIAO_2, //
 				SalaFixture.VALID_SALA_2, //
@@ -92,7 +92,7 @@ public class ReservaControllerIntegrationTest extends BaseFixture {
 				ReservaFixture.VALID_RESERVA_2 //
 		);
 		reservaRepository.save(reserva2);
-		
+
 	}
 
 	@Test
@@ -140,6 +140,23 @@ public class ReservaControllerIntegrationTest extends BaseFixture {
 	public void getReservasByReuniao_ValidTest() throws Exception {
 
 		mvc.perform(get("/reservas/reuniao/1") //
+				.contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isOk()) //
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
+				.andExpect(jsonPath("$", hasSize(1))) //
+				.andExpect(jsonPath("$[0].sala.nome", is("Sala 1")));
+	}
+
+	@Test
+	public void findDistinctByReuniaoIdAndDataAfterOrderByDataAsc_ValidTest() throws Exception {
+
+		Reserva reserva = Fixture //
+				.from(Reserva.class) //
+				.gimme(ReservaFixture.VALID);
+
+		reservaRepository.save(reserva);
+
+		mvc.perform(get("/reservas/reuniao/1/tomorrow") //
 				.contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(status().isOk()) //
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //
@@ -247,7 +264,7 @@ public class ReservaControllerIntegrationTest extends BaseFixture {
 		reuniaoRepository.save(Fixture.from(Reuniao.class).gimme(reuniaoType));
 		salaRepository.save(Fixture.from(Sala.class).gimme(salaType));
 		horarioRepository.save(Fixture.from(Horario.class).gimme(horarioType));
-		
+
 		return Fixture.from(Reserva.class).gimme(reservaType);
 	}
 

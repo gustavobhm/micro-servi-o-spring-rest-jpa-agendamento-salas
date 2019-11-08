@@ -16,6 +16,7 @@ public class ReservaFixture implements TemplateLoader {
 	public static final String VALID = "valid";
 	public static final String VALID_RESERVA_1 = "valid_reserva_1";
 	public static final String VALID_RESERVA_2 = "valid_reserva_2";
+	public static final String VALID_RESERVA_3 = "valid_reserva_3";
 
 	@Override
 	public void load() {
@@ -23,7 +24,7 @@ public class ReservaFixture implements TemplateLoader {
 			{
 				add("id", uniqueRandom(3, 100));
 				add("reuniao", one(Reuniao.class, ReuniaoFixture.VALID_REUNIAO_1));
-				add("data", randomDate("2020-01-01", "2020-12-31", new SimpleDateFormat("yyyy-MM-dd")));
+				add("data", randomDate("2999-01-01", "2999-12-31", new SimpleDateFormat("yyyy-MM-dd")));
 				add("sala", one(Sala.class, SalaFixture.VALID_SALA_1));
 				add("horario", one(Horario.class, HorarioFixture.VALID_HORARIO_1));
 				add("cafe", random(Boolean.class));
@@ -52,7 +53,7 @@ public class ReservaFixture implements TemplateLoader {
 				add("cafe", false);
 			}
 		});
-
+		
 	}
 
 }
